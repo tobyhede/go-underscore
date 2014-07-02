@@ -1,7 +1,11 @@
-CamelCase is like under_score, but for Go
+CamelCase
 ==========================================
 
+Like under_score, but for Go
+------------------------------------------
+
 See what I did there?
+
 
 
 Contains returns true if an object is in a slice.
