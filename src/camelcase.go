@@ -5,9 +5,9 @@ import (
 )
 
 func Contains(s interface{}, o interface{}) bool {
-	a := ToInterface(s)
-	for _, x := range a {
-	    if x == o {
+	s := ToInterface(s)
+	for _, i := range s {
+	    if i == o {
 	        return true
 	    }
 	}
