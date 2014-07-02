@@ -1,15 +1,15 @@
 package camelcase
 
 import (
-  "reflect"
+	"reflect"
 )
 
 func Contains(s interface{}, o interface{}) bool {
 	s := ToInterface(s)
 	for _, i := range s {
-	    if i == o {
-	        return true
-	    }
+		if i == o {
+			return true
+		}
 	}
 	return false
 }
@@ -23,8 +23,7 @@ func ToInterface(slice interface{}) []interface{} {
 	ret := make([]interface{}, s.Len())
 
 	for i := 0; i < s.Len(); i++ {
-	 	ret[i] = s.Index(i).Interface()
+		ret[i] = s.Index(i).Interface()
 	}
 	return ret
 }
-
