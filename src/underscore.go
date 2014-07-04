@@ -1,18 +1,32 @@
 package __
 
 import (
+	"fmt"
 	"reflect"
 )
 
+// type iFn func(interface{}) interface{}
+
+
+func Each(slice interface{}, fn func(el interface{}, i int)) {
+	s := ToInterface(slice)
+	for i, e := range s {
+		fmt.Println(e)
+		fmt.Println(e)
+		fn(e, i)
+	}
+}
+
 func Contains(slice interface{}, o interface{}) bool {
 	s := ToInterface(slice)
-	for _, i := range s {
-		if i == o {
+	for _, e := range s {
+		if e == o {
 			return true
 		}
 	}
 	return false
 }
+
 
 func ToInterface(slice interface{}) []interface{} {
 	s := reflect.ValueOf(slice)

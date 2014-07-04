@@ -4,6 +4,8 @@ __ Underscore.go __
 Like underscore.js, but for Go
 ------------------------------------------
 
+And yes, I am aware that the whole idea is not particularly very TheGoWay™, but it is useful as a learning exercise, and it is useful for moving fast and optimising later.
+
 
 Contains returns true if an object is in a slice.
 ```
