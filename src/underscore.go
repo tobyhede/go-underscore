@@ -1,11 +1,11 @@
-package camelcase
+package __
 
 import (
 	"reflect"
 )
 
-func Contains(s interface{}, o interface{}) bool {
-	s := ToInterface(s)
+func Contains(slice interface{}, o interface{}) bool {
+	s := ToInterface(slice)
 	for _, i := range s {
 		if i == o {
 			return true

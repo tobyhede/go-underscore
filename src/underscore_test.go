@@ -1,4 +1,4 @@
-package camelcase
+package __
 
 import (
 	"testing"
