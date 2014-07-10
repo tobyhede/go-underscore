@@ -69,13 +69,11 @@ func _map(values []reflect.Value) []reflect.Value {
 	v := interfaceToValue(values[0])
 	fn := values[1]
 
-	out := reflect.SliceOf(fn.Type().Out(0))
-	ret := reflect.MakeSlice(out, v.Len(), v.Len())
+	outType := reflect.SliceOf(fn.Type().Out(0))
+	ret := reflect.MakeSlice(outType, v.Len(), v.Len())
 
 	for i := 0; i < v.Len(); i++ {
-
 		e := v.Index(i)
-
 		r := fn.Call([]reflect.Value{e})
 		ret.Index(i).Set(r[0])
 	}
@@ -117,58 +115,19 @@ func interfaceToValue(v reflect.Value) reflect.Value {
 
 
 
+func partition (slice []int, fn func(int) bool) ([]int, []int) {
+	a := []int{}
+	b := []int{}
 
-
-/// OLD FOLLOWS
-/////////////////////////////////////////////
-
-// type iFn func(interface{}) interface{}
-
-type iterator func(interface{}) interface{}
-
-// type iteratorWithIndex func(interface{}, int, ...interface{})
-type iteratorWithIndex func(interface{}, int) interface{}
-
-// type iterator fn func(interface{})
-
-func Each(slice interface{}, fn iteratorWithIndex) {
-	s := ToInterface(slice)
-	for i, e := range s {
-		fn(e, i)
+	for i := 0; i < len(slice); i++ {
+		e := slice[i]
+		if fn(e) {
+			a = append(a, e)
+		} else {
+			b = append(b, e)
+		}
 	}
+
+	return a, b
 }
 
-// func Map(slice interface{}, fn iterator) []interface{} {
-// 	s := ToInterface(slice)
-
-// 	ret := make([]interface{}, len(s))
-// 	for i, e := range s {
-// 		ret[i] = fn(e)
-// 	}
-// 	return ret
-// }
-
-// func Contains(slice interface{}, o interface{}) bool {
-// 	s := ToInterface(slice)
-// 	for _, e := range s {
-// 		if e == o {
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
-
-
-func ToInterface(slice interface{}) []interface{} {
-	s := reflect.ValueOf(slice)
-	if s.Kind() != reflect.Slice {
-		panic("ToInterface expects a slice type")
-	}
-
-	ret := make([]interface{}, s.Len())
-
-	for i := 0; i < s.Len(); i++ {
-		ret[i] = s.Index(i).Interface()
-	}
-	return ret
-}
