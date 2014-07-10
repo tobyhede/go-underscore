@@ -13,6 +13,8 @@ func init() {
 	MakeMap(&StringMap)
 	MakeMap(&StringToBoolMap)
 	MakePartition(&PartitionInt)
+
+	MakeReduce(&ReduceInt)
 }
 
 var Contains func(interface{}, interface{}) bool
@@ -31,23 +33,28 @@ var PartitionInt func([]int, func(int) bool) ([]int, []int)
 
 var PartitionString func([]string, func(string) bool) []string
 
+var ReduceInt func([]int, func(int, int) int, int) int
 
-func MakeX(wrapper interface{}, fn func(args []reflect.Value) (results []reflect.Value)) {
+func Maker(wrapper interface{}, fn func(args []reflect.Value) (results []reflect.Value)) {
 	wrapperFn := reflect.ValueOf(wrapper).Elem()
 	v := reflect.MakeFunc(wrapperFn.Type(), fn)
 	wrapperFn.Set(v)
 }
 
 func MakeContains(fn interface{}) {
-	MakeX(fn, _contains)
+	Maker(fn, _contains)
 }
 
 func MakeMap(fn interface{}) {
-	MakeX(fn, _map)
+	Maker(fn, _map)
 }
 
 func MakePartition(fn interface{}) {
-	MakeX(fn, _partition)
+	Maker(fn, _partition)
+}
+
+func MakeReduce(fn interface{}) {
+	Maker(fn, _reduce)
 }
 
 func _contains(values []reflect.Value) []reflect.Value {
@@ -80,7 +87,6 @@ func _map(values []reflect.Value) []reflect.Value {
 	return wrap(ret)
 }
 
-
 func _partition(values []reflect.Value) []reflect.Value {
 	slice := values[0]
 	fn := values[1]
@@ -100,6 +106,20 @@ func _partition(values []reflect.Value) []reflect.Value {
 	return []reflect.Value{t, f}
 }
 
+func _reduce(values []reflect.Value) []reflect.Value {
+	slice := values[0]
+	fn := values[1]
+	ret := values[2]
+
+	for i := 0; i < slice.Len(); i++ {
+		e := slice.Index(i)
+		r := fn.Call([]reflect.Value{ret, e})
+		ret = r[0]
+	}
+
+	return wrap(ret)
+}
+
 func wrap(v reflect.Value) []reflect.Value {
 	return []reflect.Value{v}
 }
@@ -112,7 +132,16 @@ func interfaceToValue(v reflect.Value) reflect.Value {
 }
 
 
+func reduce(slice []int, fn func(int, int) int, initial int) int {
+	ret := initial
 
+	for i := 0; i < len(slice); i++ {
+		e := slice[i]
+		ret = fn(ret, e)
+	}
+
+	return ret
+}
 
 
 func partition (slice []int, fn func(int) bool) ([]int, []int) {

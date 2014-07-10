@@ -95,6 +95,20 @@ func TestPartition(t *testing.T) {
 }
 
 
+func TestReduce(t *testing.T) {
+	slice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
+	fn := func(m, e int) int {
+		return m + e
+	}
+
+	result := ReduceInt(slice, fn, 0)
+
+	if result != 55  {
+		t.Error("Expected 55 Received: ", result)
+	}
+}
+
 
 
 func with_types(count int) {
