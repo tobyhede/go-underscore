@@ -12,6 +12,8 @@ func init() {
 	// MakeMap(&Map)
 	MakeMap(&StringMap)
 	MakeMap(&StringToBoolMap)
+
+	MakePartition(&Partition)
 	MakePartition(&PartitionInt)
 
 	MakeReduce(&ReduceInt)
@@ -27,11 +29,11 @@ var StringMap func([]string, func(string) string) []string
 
 var StringToBoolMap func([]string, func(string) bool) []bool
 
-var Partition func(interface{}, func(interface{}) bool) interface{}
+var Partition func(interface{}, func(interface{}) bool) ([]interface{}, []interface{})
 
 var PartitionInt func([]int, func(int) bool) ([]int, []int)
 
-var PartitionString func([]string, func(string) bool) []string
+var PartitionString func([]string, func(string) bool) ([]string, []string)
 
 var ReduceInt func([]int, func(int, int) int, int) int
 
@@ -88,11 +90,19 @@ func _map(values []reflect.Value) []reflect.Value {
 }
 
 func _partition(values []reflect.Value) []reflect.Value {
-	slice := values[0]
+	slice := interfaceToValue(values[0])
 	fn := values[1]
 
-	t := reflect.MakeSlice(slice.Type(), 0, 0)
-	f := reflect.MakeSlice(slice.Type(), 0, 0)
+	var t, f reflect.Value
+
+	if values[0].Kind() == reflect.Interface {
+		fmt.Println(reflect.Interface)
+		t = reflect.ValueOf(make([]interface{},0))
+		f = reflect.ValueOf(make([]interface{},0))
+	} else {
+		t = reflect.MakeSlice(slice.Type(), 0, 0)
+		f = reflect.MakeSlice(slice.Type(), 0, 0)
+	}
 
 	for i := 0; i < slice.Len(); i++ {
 		e := slice.Index(i)
@@ -105,6 +115,7 @@ func _partition(values []reflect.Value) []reflect.Value {
 	}
 	return []reflect.Value{t, f}
 }
+
 
 func _reduce(values []reflect.Value) []reflect.Value {
 	slice := values[0]
@@ -131,7 +142,6 @@ func interfaceToValue(v reflect.Value) reflect.Value {
 	return v
 }
 
-
 func reduce(slice []int, fn func(int, int) int, initial int) int {
 	ret := initial
 
@@ -142,7 +152,6 @@ func reduce(slice []int, fn func(int, int) int, initial int) int {
 
 	return ret
 }
-
 
 func partition (slice []int, fn func(int) bool) ([]int, []int) {
 	a := []int{}

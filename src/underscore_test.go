@@ -79,6 +79,24 @@ func TestStringToBoolMap(t *testing.T) {
 func TestPartition(t *testing.T) {
 	slice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
+	fn := func(i interface{}) bool {
+		return (i.(int) % 2) == 1
+	}
+
+	odd, even := Partition(slice, fn)
+
+	if odd[0] != 1  {
+		t.Error("First element should == 1")
+	}
+
+	if even[0] != 2  {
+		t.Error("First element should == 2")
+	}
+}
+
+func TestPartitionInt(t *testing.T) {
+	slice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+
 	fn := func(i int) bool {
 		return (i % 2) == 1
 	}
