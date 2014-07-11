@@ -17,13 +17,15 @@ func init() {
 	MakePartition(&PartitionInt)
 
 	MakeReduce(&ReduceInt)
+
+	MakeReduceR(&ReduceRInt)
 }
 
 var Contains func(interface{}, interface{}) bool
 
 var StringContains func([]string, string) bool
 
-// var Map func(interface{}, func(interface{}) interface{}) interface{}
+var Map func(interface{}, func(interface{}) interface{}) interface{}
 
 var StringMap func([]string, func(string) string) []string
 
@@ -36,6 +38,8 @@ var PartitionInt func([]int, func(int) bool) ([]int, []int)
 var PartitionString func([]string, func(string) bool) ([]string, []string)
 
 var ReduceInt func([]int, func(int, int) int, int) int
+
+var ReduceRInt func([]int, func(int, int) int, int) int
 
 func Maker(wrapper interface{}, fn func(args []reflect.Value) (results []reflect.Value)) {
 	wrapperFn := reflect.ValueOf(wrapper).Elem()
@@ -57,6 +61,10 @@ func MakePartition(fn interface{}) {
 
 func MakeReduce(fn interface{}) {
 	Maker(fn, _reduce)
+}
+
+func MakeReduceR(fn interface{}) {
+	Maker(fn, _reduceR)
 }
 
 func _contains(values []reflect.Value) []reflect.Value {
@@ -96,7 +104,6 @@ func _partition(values []reflect.Value) []reflect.Value {
 	var t, f reflect.Value
 
 	if values[0].Kind() == reflect.Interface {
-		fmt.Println(reflect.Interface)
 		t = reflect.ValueOf(make([]interface{},0))
 		f = reflect.ValueOf(make([]interface{},0))
 	} else {
@@ -130,6 +137,21 @@ func _reduce(values []reflect.Value) []reflect.Value {
 
 	return wrap(ret)
 }
+
+func _reduceR(values []reflect.Value) []reflect.Value {
+	slice := values[0]
+	fn := values[1]
+	ret := values[2]
+
+	for i := slice.Len()-1; i >= 0; i-- {
+		e := slice.Index(i)
+		r := fn.Call([]reflect.Value{ret, e})
+		ret = r[0]
+	}
+
+	return wrap(ret)
+}
+
 
 func wrap(v reflect.Value) []reflect.Value {
 	return []reflect.Value{v}

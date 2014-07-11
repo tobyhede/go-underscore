@@ -127,7 +127,18 @@ func TestReduce(t *testing.T) {
 	}
 }
 
+func TestReduceR(t *testing.T) {
+	slice := []int{1, 2, 3, 4, 5}
 
+	fn := func(m, e int) int {
+		return m - e
+	}
+	result := ReduceRInt(slice, fn, 15)
+
+	if result != 0  {
+		t.Error("Expected 0 Received: ", result)
+	}
+}
 
 func with_types(count int) {
 	in := "z"
