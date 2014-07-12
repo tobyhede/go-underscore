@@ -542,6 +542,10 @@
 		text-align: center;
 }
 
+	code {
+		text-align: left;
+	}
+
 
 	#extra
 	{

@@ -13,12 +13,14 @@ Released   : 20140309
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title></title>
+<title>underscore.go</title>
 <meta name="keywords" content="" />
 <meta name="description" content="" />
 <link href="http://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
 <link href="default.css" rel="stylesheet" type="text/css" media="all" />
 <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/styles/default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/languages/go.min.js">
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
 
@@ -50,8 +52,17 @@ Released   : 20140309
 			<span class="byline">Donec leo, vivamus fermentum nibh in augue praesent a lacus at urna congue</span> </div>
 		<div id="three-column">
 			<div class="boxA">
-				<div class="box"> <span class="fa fa-cloud-download"></span>
-					<p>Praesent pellentesque facilisis elit. Class aptent taciti sociosqu ad litora torquent per conubia nostra.</p>
+				<div class="box"><span class="fa fa-cloud-download"></span>
+
+
+<pre>
+<code class="go">
+import "__"
+s := []string{1, 2, 3, 4}
+__.Contains(s, 3)
+
+</code>
+</pre>
 				</div>
 			</div>
 			<div class="boxB">
@@ -91,7 +102,12 @@ Released   : 20140309
 	</div>
 </div>
 <div id="copyright" class="container">
-	<p>&copy; Untitled. All rights reserved. | Photos by <a href="http://fotogrph.com/">Fotogrph</a> | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
+	<p>&copy; 2014 Toby Hede. All rights reserved. | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
 </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.0/languages/go.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
