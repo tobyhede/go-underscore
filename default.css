@@ -260,7 +260,11 @@
 /* 3-column                                                                      */
 /*********************************************************************************/
 
-	.boxA,
+	.boxA
+	{
+		width: 640px;
+	}
+
 	.boxB,
 	.boxC
 	{
@@ -335,6 +339,14 @@
 		color: #FFF;
 	}
 
+	#logo .fa-terminal  {
+		font-weight: bolder;
+		/*color:#333333;*/
+	}
+
+	#logo .fa-circle-o {
+		/*color:#FFF;*/
+	}
 	#logo a
 	{
 		text-decoration: none;

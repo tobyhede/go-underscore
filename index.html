@@ -14,7 +14,7 @@ Released   : 20140309
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>underscore.go</title>
-<meta name="keywords" content="underscore go" />
+<meta name="keywords" content="underscore go golang" />
 <meta name="description" content="underscore for go" />
 <link href="http://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
 <link href="default.css" rel="stylesheet" type="text/css" media="all" />
@@ -27,7 +27,11 @@ Released   : 20140309
 	<div id="header-wrapper">
 	<div id="header" class="container">
 		<div id="logo">
-			<h1><a href="#">_.go</a></h1>
+			<h1>
+<span class="fa-stack">
+  <i class="fa fa-square-o fa-stack-2x"></i>
+  <i class="fa fa-terminal fa-stack-1x"></i>
+</span>.go</h1>
 		</div>
 		<div id="menu">
 		</div>
@@ -38,42 +42,45 @@ Released   : 20140309
 			<div class="title">
 				<h2>underscore.go</h2>
 				<span class="byline">Like underscore, but for Go</span> </div>
-<!-- 			<ul class="actions">
-				<li><a href="#https://github.com/tobyhede/underscore.go" class="button">Get the Code</a></li>
-			</ul> -->
+			<ul class="actions">
+				<li><a href="https://github.com/tobyhede/underscore.go" class="button">Get the Code</a></li>
+			</ul>
 		</div>
 	</div>
 	<div id="extra" class="container">
 		<div class="title">
-			<h2>Helpfully Functional go</h2>
-			<span class="byline">Donec leo, vivamus fermentum nibh in augue praesent a lacus at urna congue</span> </div>
-		<div id="three-column">
+			<h2>Helpfully Functional* Go</h2>
+			<span class="byline">A useful collection of Go utilities. Designed for programmer happiness.</span> </div>
+		<div id="two-column">
 			<div class="boxA">
-				<div class="box"><span class="fa fa-cloud-download"></span>
-
-				</div>
-			</div>
-			<div class="boxB">
 				<div class="box"> <span class="fa fa-cogs"></span>
 <pre>
 <code class="go">
 import "__"
-s := []string{1, 2, 3, 4}
-__.Contains(s, 3)
+i := []int{1, 2, 3, 4}
+__.Contains(i, 3) //true
+
+s := []string{"a", "b", "c", "d"}
+m := __.Map(s, func(s string) string) {
+	return s + "!"
+})
+fmt.Println(m) //["a!", "b!", "c!", "d!"]
 
 </code>
 </pre>
 				</div>
 			</div>
-			<div class="boxC">
+			<div class="boxB">
 				<div class="box"> <span class="fa fa-space-shuttle"></span>
 					<p>Not really very fast. But fast enough.</p>
 				</div>
 			</div>
 		</div>
+		<!--
 		<ul class="actions">
-			<li><a href="#" class="button">Etiam posuere</a></li>
+			<li><a href="https://github.com/tobyhede/underscore.go" class="button">Get the Code</a></li>
 		</ul>
+		-->
 	</div>
 	<div id="featured">
 		<div class="container">
@@ -83,7 +90,7 @@ __.Contains(s, 3)
 			<p>This is <strong>PlainDisplay</strong>, a free, fully standards-compliant CSS template designed by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>. The photos in this template are from <a href="http://fotogrph.com/"> Fotogrph</a>. This free template is released under the <a href="http://templated.co/license">Creative Commons Attribution</a> license, so you're pretty much free to do whatever you want with it (even use it commercially) provided you give us credit for it. Have fun :) </p>
 		</div>
 		<ul class="actions">
-			<li><a href="#" class="button"><span class="fa fa-code-fork"></span> Fork on Github</a></li>
+			<li><a href="https://github.com/tobyhede/underscore.go" class="button"><span class="fa fa-code-fork"></span> Fork on Github</a></li>
 		</ul>
 	</div>
 <!-- 	<div id="page" class="container">
@@ -96,8 +103,10 @@ __.Contains(s, 3)
 		</ul>
 	</div> -->
 </div>
+
 <div id="copyright" class="container">
-	<p>&copy; 2014 Toby Hede. All rights reserved. | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
+<p>* Mostly, sort-of</p>
+	<p>&copy; 2014 <a href="https://twitter.com/tobyhede">Toby Hede (@tobyhede)</a>. All rights reserved. | Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>.</p>
 </div>
 
 
