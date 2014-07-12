@@ -2,7 +2,7 @@
 	{
 		height: 100%;
 	}
-	
+
 	body
 	{
 		margin: 0px;
@@ -13,8 +13,8 @@
 		font-weight: 300;
 		color: #656565;
 	}
-	
-	
+
+
 	h1, h2, h3
 	{
 		margin: 0;
@@ -22,53 +22,53 @@
 		font-weight: 700;
 		color: #2B3F48;
 	}
-	
+
 	p, ol, ul
 	{
 		margin-top: 0;
 	}
-	
+
 	ol, ul
 	{
 		padding: 0;
 		list-style: none;
 	}
-	
+
 	ul.actions
 	{
 		text-align: center;
 	}
-		
+
 		ul.actions li
 		{
 		}
-	
+
 	p
 	{
 		line-height: 180%;
 	}
-	
+
 	strong
 	{
 	}
-	
+
 	a
 	{
 		color: #0000FF;
 	}
-	
+
 	a:hover
 	{
 		text-decoration: none;
 	}
-	
+
 	.container
 	{
 		overflow: hidden;
 		margin: 0em auto;
 		width: 1000px;
 	}
-	
+
 /*********************************************************************************/
 /* Image Style                                                                   */
 /*********************************************************************************/
@@ -77,32 +77,32 @@
 	{
 		display: inline-block;
 	}
-	
+
 	.image img
 	{
 		display: block;
 		width: 100%;
 	}
-	
+
 	.image-full
 	{
 		display: block;
 		width: 100%;
 		margin: 0 0 2em 0;
 	}
-	
+
 	.image-left
 	{
 		float: left;
 		margin: 0 2em 2em 0;
 	}
-	
+
 	.image-centered
 	{
 		display: block;
 		margin: 0 0 2em 0;
 	}
-	
+
 	.image-centered img
 	{
 		margin: 0 auto;
@@ -122,7 +122,7 @@
 	{
 		display: inline-block;
 	}
-	
+
 	ul.staff li img
 	{
 		width: 80%;
@@ -140,26 +140,26 @@
 		padding: 2em 0em 0em 0em;
 		list-style: none;
 	}
-	
+
 	ul.contact li
 	{
 		display: inline-block;
 		padding: 0em 0.30em;
 		font-size: 1em;
 	}
-	
+
 	ul.contact li span
 	{
 		display: none;
 		margin: 0;
 		padding: 0;
 	}
-	
+
 	ul.contact li a
 	{
 		color: #FFF;
 	}
-	
+
 	ul.contact li a:before
 	{
 		display: inline-block;
@@ -171,7 +171,7 @@
 		text-align: center;
 		color: #FFFFFF;
 	}
-	
+
 	ul.contact li a.icon-twitter:before { background: #2DAAE4; }
 	ul.contact li a.icon-facebook:before { background: #39599F; }
 	ul.contact li a.icon-dribbble:before { background: #C4376B;	}
@@ -190,12 +190,12 @@
 		letter-spacing: 0.20em;
 		line-height: 4em;
 		text-decoration: none;
-		text-transform: uppercase;
+		/*text-transform: uppercase;*/
 		font-weight: 400;
 		font-size: 1em;
 		color: #FFF;
 	}
-	
+
 	.button:before
 	{
 		display: inline-block;
@@ -208,7 +208,7 @@
 		text-align: center;
 		color: #272925;
 	}
-	
+
 /*********************************************************************************/
 /* Heading Titles                                                                */
 /*********************************************************************************/
@@ -217,19 +217,19 @@
 	{
 		margin-bottom: 3em;
 	}
-	
+
 	.title h2
 	{
-		text-transform: uppercase;
+		/*text-transform: uppercase;*/
 		font-size: 2.7em;
 	}
-	
+
 	.title .byline
 	{
 		font-size: 1.7em;
 		color: #6F6F6F;
 	}
-		
+
 /*********************************************************************************/
 /* 4-column                                                                      */
 /*********************************************************************************/
@@ -241,7 +241,7 @@
 	{
 		width: 235px;
 	}
-	
+
 	.box1,
 	.box2,
 	.box3,
@@ -249,12 +249,12 @@
 		float: left;
 		margin-right: 20px;
 	}
-	
+
 	.box4
 	{
 		float: right;
 	}
-	
+
 /*********************************************************************************/
 /* 3-column                                                                      */
 /*********************************************************************************/
@@ -272,7 +272,7 @@
 		float: left;
 		margin-right: 20px;
 	}
-	
+
 	.boxC
 	{
 		float: right;
@@ -287,7 +287,7 @@
 	{
 		width: 575px;
 	}
-	
+
 	.tbox1
 	{
 		float: left;
@@ -297,7 +297,7 @@
 	{
 		float: right;
 	}
-	
+
 	#wrapper
 	{
 		background: #FFF;
@@ -328,16 +328,16 @@
 		top: 1em;
 		left: 0;
 	}
-	
+
 	#logo h1
 	{
 		color: #FFF;
 	}
-	
+
 	#logo a
 	{
 		text-decoration: none;
-		text-transform: uppercase;
+		/*text-transform: uppercase;*/
 		color: #FFF;
 	}
 
@@ -351,40 +351,40 @@
 		top: 2em;
 		right: 0;
 	}
-	
+
 	#menu ul
 	{
 		display: inline-block;
 	}
-	
+
 	#menu li
 	{
 		display: block;
 		float: left;
 		text-align: center;
 	}
-	
+
 	#menu li a, #menu li span
 	{
 		padding: 1em 1.5em;
 		letter-spacing: 1px;
 		text-decoration: none;
-		text-transform: uppercase;
+		/*text-transform: uppercase;*/
 		font-size: 0.8em;
 		color: #FFF;
 	}
-	
+
 	#menu li:hover a, #menu li.active a, #menu li.active span
 	{
 		color: #FFF;
 	}
-	
+
 	#menu .current_page_item a
 	{
 		background: #009E2D;
 		color: #FFF;
 	}
-	
+
 	#menu .icon
 	{
 	}
@@ -406,7 +406,7 @@
 	#banner .title
 	{
 		margin-bottom: 1em;
-		text-transform: uppercase !important;
+		/*text-transform: uppercase !important;*/
 	}
 
 	#banner .title h2
@@ -418,7 +418,7 @@
 	{
 		color: rgba(255,255,255,.6);
 	}
-	
+
 	#banner .button
 	{
 		margin-top: 3em;
@@ -434,7 +434,7 @@
 		padding: 5em 0em;
 		text-align: center;
 	}
-	
+
 	#page .button
 	{
 		margin-top: 2em;
@@ -476,14 +476,14 @@
 		padding: 5em 0em;
 		border-top: 1px solid rgba(255,255,255,0.08);
 	}
-	
+
 	#copyright p
 	{
 		text-align: center;
 		font-size: 1em;
 		color: rgba(255,255,255,0.5);
 	}
-	
+
 	#copyright a
 	{
 		text-decoration: none;
@@ -507,7 +507,7 @@
 	{
 		color: rgba(255,255,255,1);
 	}
-	
+
 	#featured .button
 	{
 		background: #FFF;
@@ -548,17 +548,17 @@
 		overflow: hidden;
 		padding: 5em 0em;
 	}
-	
+
 	#extra .title
 	{
 		text-align: center;
 	}
-	
+
 	#extra .button
 	{
 		margin-top: 5em;
 	}
-	
+
 	#extra .fa
 	{
 		display: block;
