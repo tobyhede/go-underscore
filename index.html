@@ -57,22 +57,29 @@ Released   : 20140309
 <pre>
 <code class="go">
 import "__"
-i := []int{1, 2, 3, 4}
-__.Contains(i, 3) //true
 
 s := []string{"a", "b", "c", "d"}
-m := __.Map(s, func(s string) string) {
-	return s + "!"
-})
-fmt.Println(m) //["a!", "b!", "c!", "d!"]
 
+fn := func(s string) string {
+	return s + "!"
+}
+
+// User generic, interface based helpers
+__.Map(s, fn) //["a!", "b!", "c!", "d!"] as interface
+
+// Define your own typed functions
+var StringMap func([]string, func(string) string) []string
+MakeMap(&StringMap)
+
+StringMap(s, fn) //["a!", "b!", "c!", "d!"] as []string
 </code>
 </pre>
 				</div>
 			</div>
 			<div class="boxB">
 				<div class="box"> <span class="fa fa-space-shuttle"></span>
-					<p>Not really very fast. But fast enough.</p>
+					<p>Totally not really designed for performance.
+					<p>Ease of use, fast enough.</p>
 				</div>
 			</div>
 		</div>
