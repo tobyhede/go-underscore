@@ -64,15 +64,16 @@ fn := func(s string) string {
 	return s + "!"
 }
 
-// User generic, interface based helpers
-__.Map(s, fn) //["a!", "b!", "c!", "d!"] as interface
+// Generic, interface based helpers
+m:= __.Map(s, fn)
+fmt.Println(m) //["a!", "b!", "c!", "d!"]
 
 // Define your own typed functions
-var StringMap func([]string, func(string) string) []string
-MakeMap(&StringMap)
+var SMap func([]string, func(string) string) []string
+__.MakeMap(&SMap)
 
-StringMap(s, fn) //["a!", "b!", "c!", "d!"] as []string
-
+m := __.SMap(s, fn)
+fmt.Println(m) //["a!", "b!", "c!", "d!"]
 </code>
 </pre>
 				</div>
