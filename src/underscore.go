@@ -9,7 +9,7 @@ func init() {
 	fmt.Println()
 	MakeContains(&Contains)
 	MakeContains(&StringContains)
-	// MakeMap(&Map)
+	MakeMap(&Map)
 	MakeMap(&StringMap)
 	MakeMap(&StringToBoolMap)
 
@@ -21,11 +21,18 @@ func init() {
 	MakeReduceR(&ReduceRInt)
 }
 
+
+/**
+	MAP
+
+	Map func([]A, func(A) B) []B
+**/
+
 var Contains func(interface{}, interface{}) bool
 
 var StringContains func([]string, string) bool
 
-var Map func(interface{}, func(interface{}) interface{}) interface{}
+var Map func(interface{}, func(interface{}) interface{}) []interface{}
 
 var StringMap func([]string, func(string) string) []string
 
@@ -67,9 +74,24 @@ func MakeReduceR(fn interface{}) {
 	Maker(fn, _reduceR)
 }
 
+func ToI(slice interface{}) []interface{} {
+	s := reflect.ValueOf(slice)
+	if s.Kind() != reflect.Slice {
+		panic("ToInterface expects a slice type")
+	}
+
+	ret := make([]interface{}, s.Len())
+
+	for i := 0; i < s.Len(); i++ {
+		ret[i] = s.Index(i).Interface()
+	}
+	return ret
+}
+
+
 func _contains(values []reflect.Value) []reflect.Value {
 
-	v := interfaceToValue(values[0])
+	v := iToValue(values[0])
 	o := values[1].Interface()
 
 	for i := 0; i < v.Len(); i++ {
@@ -83,22 +105,25 @@ func _contains(values []reflect.Value) []reflect.Value {
 
 func _map(values []reflect.Value) []reflect.Value {
 
-	v := interfaceToValue(values[0])
+	v := iToValue(values[0])
 	fn := values[1]
 
-	outType := reflect.SliceOf(fn.Type().Out(0))
-	ret := reflect.MakeSlice(outType, v.Len(), v.Len())
+	var ret reflect.Value
+
+	outT := reflect.SliceOf(fn.Type().Out(0))
+	ret = reflect.MakeSlice(outT, v.Len(), v.Len())
 
 	for i := 0; i < v.Len(); i++ {
 		e := v.Index(i)
 		r := fn.Call([]reflect.Value{e})
 		ret.Index(i).Set(r[0])
 	}
-	return wrap(ret)
+
+	return []reflect.Value{ret}
 }
 
 func _partition(values []reflect.Value) []reflect.Value {
-	slice := interfaceToValue(values[0])
+	slice := iToValue(values[0])
 	fn := values[1]
 
 	var t, f reflect.Value
@@ -152,18 +177,22 @@ func _reduceR(values []reflect.Value) []reflect.Value {
 	return wrap(ret)
 }
 
-
 func wrap(v reflect.Value) []reflect.Value {
 	return []reflect.Value{v}
 }
 
-func interfaceToValue(v reflect.Value) reflect.Value {
+func iToValue(v reflect.Value) reflect.Value {
 	if v.Kind() == reflect.Interface {
 		return reflect.ValueOf(v.Interface())
 	}
 	return v
 }
 
+
+
+/**
+	Reference Implementations Follow
+**/
 func reduce(slice []int, fn func(int, int) int, initial int) int {
 	ret := initial
 
@@ -189,5 +218,26 @@ func partition (slice []int, fn func(int) bool) ([]int, []int) {
 	}
 
 	return a, b
+}
+
+// avoids name collision with map
+func collect(slice []string, fn func(string) string) []string {
+	ret := make([]string, len(slice), len(slice))
+
+	for i := 0; i < len(slice); i++ {
+		ret[i] = fn(slice[i])
+	}
+
+	return ret
+}
+
+
+func collectMap(m map[string]int, fn func(string, int) string) []string {
+	ret := make([]string, 0, len(m))
+
+	for k, v := range m {
+		ret = append(ret, fn(k, v))
+	}
+	return ret
 }
 

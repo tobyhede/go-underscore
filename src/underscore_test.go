@@ -2,41 +2,21 @@ package __
 
 import (
 	"fmt"
+    "strconv"
 	"testing"
 	"time"
 )
 
 var SLICE = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 
-
-func contains(slice []string, s string) bool {
-	for _, e := range slice {
-		if e == s {
-			return true
-		}
-	}
-	return false
-}
+var MAP = map[string]int{"a":1,"b":2,"c":3,"d":4,"e":5,"f":6,"g":7,"h":8,"i":9,"j":10,"k":11,"l":12,"m":13,"n":14,"o":15,"p":16,"q":17,"r":18,"s":19,"t":20,"u":21,"v":22,"w":23,"x":24,"y":25,"z":26}
 
 
-
-
-// func TestMap(t *testing.T) {
-// 	mapped := Map(SLICE, func(e interface{}) interface{} {
-// 		s := e.(string)
-// 		return s + "!"
-// 	})
-// 	fmt.Println(mapped)
-// 	// if mapped[0] != "a!" {
-// 	// 	t.Error("First element should be a!")
-// 	// }
-// 	// if mapped[len(mapped)-1] != "z!" {
-// 	// 	t.Error("Last element should be z!")
-// 	// }
-// }
 
 
 func TestContains(t *testing.T) {
+
+
 	in := "a"
 	out := "!"
 
@@ -56,6 +36,30 @@ func TestStringMap(t *testing.T) {
 
 	m := StringMap(SLICE, fn)
 
+	if m[0] != "a!" {
+		t.Error("First element should == a!")
+	}
+}
+
+func TestMapWithInterface(t *testing.T) {
+	fn := func(s interface{}) interface{} {
+		return s.(string) + "!"
+	}
+	m := Map(ToI(SLICE), fn)
+	if m[0] != "a!" {
+		t.Error("First element should == a!")
+	}
+}
+
+
+func TestMapWithMaps(t *testing.T) {
+	fn := func(s string, i int) string {
+		n := strconv.Itoa(i)
+		return s + n
+	}
+
+	m := collectMap(MAP, fn)
+	fmt.Println(m)
 	if m[0] != "a!" {
 		t.Error("First element should == a!")
 	}
@@ -138,6 +142,17 @@ func TestReduceR(t *testing.T) {
 	if result != 0  {
 		t.Error("Expected 0 Received: ", result)
 	}
+}
+
+
+
+func contains(slice []string, s string) bool {
+	for _, e := range slice {
+		if e == s {
+			return true
+		}
+	}
+	return false
 }
 
 func with_types(count int) {
