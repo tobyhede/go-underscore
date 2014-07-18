@@ -23,14 +23,8 @@ func init() {
 
 
 /**
-	MAP
-
 	Map func([]A, func(A) B) []B
 **/
-
-var Contains func(interface{}, interface{}) bool
-
-var StringContains func([]string, string) bool
 
 var Map func(interface{}, func(interface{}) interface{}) []interface{}
 
@@ -38,15 +32,29 @@ var StringMap func([]string, func(string) string) []string
 
 var StringToBoolMap func([]string, func(string) bool) []bool
 
+/**
+	Partition func([]A, func(A) bool) ([]A []A)
+**/
+
 var Partition func(interface{}, func(interface{}) bool) ([]interface{}, []interface{})
 
 var PartitionInt func([]int, func(int) bool) ([]int, []int)
 
 var PartitionString func([]string, func(string) bool) ([]string, []string)
 
+
+var Contains func(interface{}, interface{}) bool
+
+var StringContains func([]string, string) bool
+
+
+
 var ReduceInt func([]int, func(int, int) int, int) int
 
 var ReduceRInt func([]int, func(int, int) int, int) int
+
+
+
 
 func Maker(wrapper interface{}, fn func(args []reflect.Value) (results []reflect.Value)) {
 	wrapperFn := reflect.ValueOf(wrapper).Elem()
