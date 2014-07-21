@@ -1,12 +1,10 @@
 package __
 
 import (
-	"fmt"
 	"reflect"
 )
 
 func init() {
-	fmt.Println()
 	MakeContains(&Contains)
 	MakeContains(&StringContains)
 	MakeMap(&Map)
