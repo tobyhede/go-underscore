@@ -25,20 +25,26 @@ The base Map function accepts interface{} types and returns []interface{}
     return s.(string) + "!"
   }
 
-  m := __.Map(ToI(slice), fn)
-  fmt.Println(m) //["a!", "b!", "c!", "d!"]
+  m := __.Map(__.ToI(s), fn)
+  fmt.Printf("%#v\n", m) // []interface {}{"a!", "b!", "c!", "d!"}
 ```
 
 Typed Maps can be defined using a function type and the *MakeMap* helper.
 
 ```
-  Map func([]A, func(A) B) []B
+  // Map func([]A, func(A) B) []B
 
   var SMap func([]string, func(string) string) []string
   __.MakeMap(&SMap)
 
-  m := __.SMap(s, fn)
-  fmt.Println(m) //["a!", "b!", "c!", "d!"]
+  s := []string{"a", "b", "c", "d"}
+
+  fn := func(s string) string {
+    return s + "!"
+  }
+
+  m := SMap(s, fn)
+  fmt.Printf("%#v\n", m) // []string{"a!", "b!", "c!", "d!"}
 ```
 
 Of note is the return value of Map is a slice of the return type of the operant function.
@@ -65,17 +71,16 @@ The base Partition function accepts interface{} types and returns []interface{}
 
   odd, even := __.Partition(s, fn)
 
-  fmt.Println(odd)  //[1, 3, 5, 7, 9]
-  fmt.Println(even) //[2, 4, 6, 8, 10]
+  fmt.Printf("%#v\n", odd)  // []interface {}{1, 3, 5, 7, 9}
+  fmt.Printf("%#v\n", even) // []interface {}{2, 4, 6, 8, 10}
 ```
 
-Typed Partitions can be defined using a function type and the *MakeMap* helper.
+Typed Partitions can be defined using a function type and the *MakePartition* helper.
 
 ```
   // Partition func([]A, func(A) bool) ([]A []A)
 
   var IPartition func([]int, func(int) bool) ([]int, []int)
-
   __.MakePartition(&IPartition)
 
   s := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
@@ -84,10 +89,10 @@ Typed Partitions can be defined using a function type and the *MakeMap* helper.
     return (i % 2) == 1
   }
 
-  odd, even := __.IPartition(s, fn)
+  odd, even := IPartition(s, fn)
 
-  fmt.Println(odd)  //[1, 3, 5, 7, 9]
-  fmt.Println(even) //[2, 4, 6, 8, 10]
+  fmt.Printf("%#v\n", odd)  // []int{1, 3, 5, 7, 9}
+  fmt.Printf("%#v\n", even) // []int{2, 4, 6, 8, 10}
 ```
 
 
@@ -101,7 +106,7 @@ Contains returns true if an object is in a slice.
 ```
 
 
-ToI converts a slice of arbitrary type []T into a slice of []interfaces{}
+ToI converts a slice of arbitrary type []T into a slice of []interface{}
 
 ```
   s := []int{1, 1, 3, 5, 8, 13}
