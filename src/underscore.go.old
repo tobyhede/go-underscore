@@ -9,9 +9,11 @@ func init() {
 	fmt.Println()
 	MakeContains(&Contains)
 	MakeContains(&StringContains)
+
 	MakeMap(&Map)
-	MakeMap(&StringMap)
-	MakeMap(&StringToBoolMap)
+	MakeMap(&MapString)
+	MakeMap(&MapInt)
+	MakeMap(&MapStringToBool)
 
 	MakePartition(&Partition)
 	MakePartition(&PartitionInt)
@@ -28,9 +30,12 @@ func init() {
 
 var Map func(interface{}, func(interface{}) interface{}) []interface{}
 
-var StringMap func([]string, func(string) string) []string
+var MapString func([]string, func(string) string) []string
 
-var StringToBoolMap func([]string, func(string) bool) []bool
+var MapInt func([]int, func(int) int) []int
+
+var MapStringToBool func([]string, func(string) bool) []bool
+
 
 /**
 	Partition func([]A, func(A) bool) ([]A []A)
@@ -246,6 +251,7 @@ func collectMap(m map[string]int, fn func(string, int) string) []string {
 	for k, v := range m {
 		ret = append(ret, fn(k, v))
 	}
+	fmt.Println(ret)
 	return ret
 }
 

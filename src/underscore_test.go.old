@@ -7,45 +7,56 @@ import (
 	"time"
 )
 
-var SLICE = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+var SLICE_STRING = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+
+var SLICE_INT = []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 
 var MAP = map[string]int{"a":1,"b":2,"c":3,"d":4,"e":5,"f":6,"g":7,"h":8,"i":9,"j":10,"k":11,"l":12,"m":13,"n":14,"o":15,"p":16,"q":17,"r":18,"s":19,"t":20,"u":21,"v":22,"w":23,"x":24,"y":25,"z":26}
 
 
-
-
 func TestContains(t *testing.T) {
-
-
 	in := "a"
 	out := "!"
 
-	if b := Contains(SLICE, in); b != true {
+	if b := Contains(SLICE_STRING, in); b != true {
 		t.Error("Slice should contain ", in)
 	}
 
-	if b := Contains(SLICE, out); b != false {
+	if b := Contains(SLICE_STRING, out); b != false {
 		t.Error("Slice should not contain ", out)
 	}
 }
 
-func TestStringMap(t *testing.T) {
+func TestMapString(t *testing.T) {
 	fn := func(s string) string {
 		return s + "!"
 	}
 
-	m := StringMap(SLICE, fn)
+	m := MapString(SLICE_STRING, fn)
 
 	if m[0] != "a!" {
 		t.Error("First element should == a!")
 	}
 }
 
+func TestMapInt(t *testing.T) {
+	fn := func(i int) int {
+		return i + 1
+	}
+
+	m := MapInt(SLICE_INT, fn)
+
+	if i := m[0]; i != 2 {
+		t.Error("Expected 2; Recieved ", i)
+	}
+}
+
+
 func TestMapWithInterface(t *testing.T) {
 	fn := func(s interface{}) interface{} {
 		return s.(string) + "!"
 	}
-	m := Map(ToI(SLICE), fn)
+	m := Map(ToI(SLICE_STRING), fn)
 	if m[0] != "a!" {
 		t.Error("First element should == a!")
 	}
@@ -66,17 +77,17 @@ func TestMapWithMaps(t *testing.T) {
 }
 
 
-func TestStringToBoolMap(t *testing.T) {
-	b := StringToBoolMap(SLICE, func(s string) bool {
+func TestMapMapStringToBool(t *testing.T) {
+	b := MapStringToBool(SLICE_STRING, func(s string) bool {
 		return s == "z"
 	})
 
 	if b[0]  {
-		t.Error("First element should == false")
+		t.Error("Expected false; Received true")
 	}
 
 	if !b[len(b)-1]  {
-		t.Error("Last element should == true")
+		t.Error("Expected true; Received false")
 	}
 }
 
@@ -160,7 +171,7 @@ func with_types(count int) {
 	start := time.Now()
 
 	for i := 0; i < count; i++ {
-		contains(SLICE, in)
+		contains(SLICE_STRING, in)
 	}
 
 	elapsed := time.Since(start)
@@ -172,7 +183,7 @@ func with_interface(count int) {
 	start := time.Now()
 
 	for i := 0; i < count; i++ {
-		Contains(SLICE, in)
+		Contains(SLICE_STRING, in)
 	}
 
 	elapsed := time.Since(start)
@@ -184,7 +195,7 @@ func with_magic(count int) {
 	start := time.Now()
 
 	for i := 0; i < count; i++ {
-		StringContains(SLICE, in)
+		StringContains(SLICE_STRING, in)
 	}
 
 	elapsed := time.Since(start)
