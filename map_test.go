@@ -12,7 +12,7 @@ func TestMapString(t *testing.T) {
 	m := MapString(SLICE_STRING, fn)
 
 	if expect := m[0]; expect != "a!" {
-		t.Error("[TestMapString] Expected %v;", expect)
+		t.Errorf("[TestMapString] Expected %v;", expect)
 	}
 }
 
@@ -46,12 +46,12 @@ func TestMapMapStringToBool(t *testing.T) {
 	})
 
 	if expect := b[0]; expect {
-		t.Error("[TestMapStringToBool] Expected false; Received %v", expect)
+		t.Errorf("[TestMapStringToBool] Expected false; Received %v", expect)
 	}
 
-	last := len(b)-1
+	last := len(b) - 1
 	if expect := b[last]; !expect {
-		t.Error("[TestMapStringToBool] Expected true; Received %v", expect)
+		t.Errorf("[TestMapStringToBool] Expected true; Received %v", expect)
 	}
 }
 

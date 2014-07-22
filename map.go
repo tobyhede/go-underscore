@@ -25,7 +25,6 @@ var MapInt func([]int, func(int) int) []int
 
 var MapStringToBool func([]string, func(string) bool) []bool
 
-
 func MakeMap(fn interface{}) {
 	Maker(fn, _map)
 }
@@ -49,7 +48,6 @@ func _map(values []reflect.Value) []reflect.Value {
 	return []reflect.Value{ret}
 }
 
-
 /**
 	Reference Map impementations
 **/
@@ -63,7 +61,6 @@ func RefSliceMap(slice []string, fn func(string) string) []string {
 	return ret
 }
 
-
 func RefMapMap(m map[string]int, fn func(string, int) string) []string {
 	ret := make([]string, 0, len(m))
 
@@ -72,4 +69,3 @@ func RefMapMap(m map[string]int, fn func(string, int) string) []string {
 	}
 	return ret
 }
-
