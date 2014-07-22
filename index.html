@@ -41,7 +41,9 @@ Released   : 20140309
 		<div class="container">
 			<div class="title">
 				<h2>underscore.go</h2>
-				<span class="byline">Like underscore, but for Go</span> </div>
+				<span class="byline">Move Fast; Optimize Late</span> </div>
+
+
 			<ul class="actions">
 				<li><a href="https://github.com/tobyhede/underscore.go" class="button">Get the Code</a></li>
 			</ul>
@@ -56,7 +58,7 @@ Released   : 20140309
 				<div class="box"> <span class="fa fa-cogs"></span>
 <pre>
 <code class="go">
-import "__"
+import "un"
 
 s := []string{"a", "b", "c", "d"}
 
@@ -65,14 +67,14 @@ fn := func(s string) string {
 }
 
 // Generic, interface based helpers
-m:= __.Map(s, fn)
+m:= un.Map(s, fn)
 fmt.Println(m) //["a!", "b!", "c!", "d!"]
 
 // Define your own typed functions
 var SMap func([]string, func(string) string) []string
-__.MakeMap(&SMap)
+un.MakeMap(&SMap)
 
-m := __.SMap(s, fn)
+m := un.SMap(s, fn)
 fmt.Println(m) //["a!", "b!", "c!", "d!"]
 </code>
 </pre>
@@ -80,8 +82,9 @@ fmt.Println(m) //["a!", "b!", "c!", "d!"]
 			</div>
 			<div class="boxB">
 				<div class="box"> <span class="fa fa-space-shuttle"></span>
-					<p>Totally not really designed for performance.
+					<p>Sort-of like underscore, but for Go</p>
 					<p>Ease of use, fast enough.</p>
+					<p>Totally not really designed for performance.</p>
 				</div>
 			</div>
 		</div>
