@@ -25,7 +25,7 @@ The base Map function accepts interface{} types and returns []interface{}
     return s.(string) + "!"
   }
 
-  m := __.Map(ToI(slice), fn)
+  m := un.Map(ToI(slice), fn)
   fmt.Println(m) //["a!", "b!", "c!", "d!"]
 ```
 
@@ -35,9 +35,9 @@ Typed Maps can be defined using a function type and the *MakeMap* helper.
   Map func([]A, func(A) B) []B
 
   var SMap func([]string, func(string) string) []string
-  __.MakeMap(&SMap)
+  un.MakeMap(&SMap)
 
-  m := __.SMap(s, fn)
+  m := un.SMap(s, fn)
   fmt.Println(m) //["a!", "b!", "c!", "d!"]
 ```
 
@@ -63,7 +63,7 @@ The base Partition function accepts interface{} types and returns []interface{}
     return (i.(int) % 2) == 1
   }
 
-  odd, even := __.Partition(s, fn)
+  odd, even := un.Partition(s, fn)
 
   fmt.Println(odd)  //[1, 3, 5, 7, 9]
   fmt.Println(even) //[2, 4, 6, 8, 10]
@@ -76,7 +76,7 @@ Typed Partitions can be defined using a function type and the *MakeMap* helper.
 
   var IPartition func([]int, func(int) bool) ([]int, []int)
 
-  __.MakePartition(&IPartition)
+  un.MakePartition(&IPartition)
 
   s := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 
@@ -84,7 +84,7 @@ Typed Partitions can be defined using a function type and the *MakeMap* helper.
     return (i % 2) == 1
   }
 
-  odd, even := __.IPartition(s, fn)
+  odd, even := un.IPartition(s, fn)
 
   fmt.Println(odd)  //[1, 3, 5, 7, 9]
   fmt.Println(even) //[2, 4, 6, 8, 10]
@@ -96,7 +96,7 @@ Contains returns true if an object is in a slice.
   o := "a"
   s := []string{"a", "b", "c"}
 
-  b := __.Contains(s, o)
+  b := un.Contains(s, o)
   fmt.Println(b) //true
 ```
 
@@ -105,5 +105,5 @@ ToI converts a slice of arbitrary type []T into a slice of []interfaces{}
 
 ```
   s := []int{1, 1, 3, 5, 8, 13}
-  i := __.ToI(s)
+  i := un.ToI(s)
 ```
