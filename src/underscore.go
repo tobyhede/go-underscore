@@ -21,7 +21,6 @@ func init() {
 	MakeReduceR(&ReduceRInt)
 }
 
-
 /**
 	Map func([]A, func(A) B) []B
 **/
@@ -42,19 +41,13 @@ var PartitionInt func([]int, func(int) bool) ([]int, []int)
 
 var PartitionString func([]string, func(string) bool) ([]string, []string)
 
-
 var Contains func(interface{}, interface{}) bool
 
 var StringContains func([]string, string) bool
 
-
-
 var ReduceInt func([]int, func(int, int) int, int) int
 
 var ReduceRInt func([]int, func(int, int) int, int) int
-
-
-
 
 func Maker(wrapper interface{}, fn func(args []reflect.Value) (results []reflect.Value)) {
 	wrapperFn := reflect.ValueOf(wrapper).Elem()
@@ -96,7 +89,6 @@ func ToI(slice interface{}) []interface{} {
 	return ret
 }
 
-
 func _contains(values []reflect.Value) []reflect.Value {
 
 	v := iToValue(values[0])
@@ -137,8 +129,8 @@ func _partition(values []reflect.Value) []reflect.Value {
 	var t, f reflect.Value
 
 	if values[0].Kind() == reflect.Interface {
-		t = reflect.ValueOf(make([]interface{},0))
-		f = reflect.ValueOf(make([]interface{},0))
+		t = reflect.ValueOf(make([]interface{}, 0))
+		f = reflect.ValueOf(make([]interface{}, 0))
 	} else {
 		t = reflect.MakeSlice(slice.Type(), 0, 0)
 		f = reflect.MakeSlice(slice.Type(), 0, 0)
@@ -155,7 +147,6 @@ func _partition(values []reflect.Value) []reflect.Value {
 	}
 	return []reflect.Value{t, f}
 }
-
 
 func _reduce(values []reflect.Value) []reflect.Value {
 	slice := values[0]
@@ -176,7 +167,7 @@ func _reduceR(values []reflect.Value) []reflect.Value {
 	fn := values[1]
 	ret := values[2]
 
-	for i := slice.Len()-1; i >= 0; i-- {
+	for i := slice.Len() - 1; i >= 0; i-- {
 		e := slice.Index(i)
 		r := fn.Call([]reflect.Value{ret, e})
 		ret = r[0]
@@ -196,8 +187,6 @@ func iToValue(v reflect.Value) reflect.Value {
 	return v
 }
 
-
-
 /**
 	Reference Implementations Follow
 **/
@@ -212,7 +201,7 @@ func reduce(slice []int, fn func(int, int) int, initial int) int {
 	return ret
 }
 
-func partition (slice []int, fn func(int) bool) ([]int, []int) {
+func partition(slice []int, fn func(int) bool) ([]int, []int) {
 	a := []int{}
 	b := []int{}
 
@@ -239,7 +228,6 @@ func collect(slice []string, fn func(string) string) []string {
 	return ret
 }
 
-
 func collectMap(m map[string]int, fn func(string, int) string) []string {
 	ret := make([]string, 0, len(m))
 
@@ -248,4 +236,3 @@ func collectMap(m map[string]int, fn func(string, int) string) []string {
 	}
 	return ret
 }
-
