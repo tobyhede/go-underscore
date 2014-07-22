@@ -1,10 +1,18 @@
-__ Underscore.go __
+Underscore.go
 ==========================================
 
-Like underscore.js, but for Go
+Move Fast; Optimize Late
 ------------------------------------------
 
-And yes, I am aware that the whole idea is not particularly very TheGoWay™, but it is useful as a learning exercise, and it is useful for moving fast and optimising later.
+A useful collection of Go utilities. Designed for programmer happiness. 
+
+TL;DR Sort-of like underscore.js, but for Go
+
+
+:warning: Alert :warning:
+------------------------------------------
+This package is in heavy flux at the moment as I work to incorporate feedback from various sources.
+
 
 
 ### Map ###
@@ -107,3 +115,11 @@ ToI converts a slice of arbitrary type []T into a slice of []interfaces{}
   s := []int{1, 1, 3, 5, 8, 13}
   i := un.ToI(s)
 ```
+
+
+
+
+Notes
+------------------------------------------
+
+I am aware that the whole idea is not particularly very TheGoWay™, but it is useful as a learning exercise, and it is useful for moving fast and optimising later.
