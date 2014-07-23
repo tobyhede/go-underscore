@@ -21,6 +21,20 @@ func TestEach(t *testing.T) {
 	}
 }
 
+func TestEachInt(t *testing.T) {
+	var receive int
+
+	fn := func(i int) {
+		receive += i
+	}
+
+	EachInt(SLICE_INT, fn)
+
+	if expect := 45; expect != receive {
+		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
+	}
+}
+
 func TestRefEach(t *testing.T) {
 	var buffer bytes.Buffer
 

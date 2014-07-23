@@ -1,12 +1,10 @@
 package un
 
 import (
-	"fmt"
 	"reflect"
 )
 
 func init() {
-	fmt.Println()
 	MakeMap(&Map)
 	MakeMap(&MapString)
 	MakeMap(&MapInt)

@@ -4,7 +4,7 @@ Underscore.go
 Move Fast; Optimize Late
 ------------------------------------------
 
-A useful collection of Go utilities. Designed for programmer happiness. 
+A useful collection of Go utilities. Designed for programmer happiness.
 
 TL;DR Sort-of like underscore.js, but for Go
 
@@ -15,12 +15,51 @@ This package is in heavy flux at the moment as I work to incorporate feedback fr
 
 
 
+### Each ###
+---------------------------------------------------------------------------
+
+Each func([]A, func(A))
+
+Applies the given function to each element of a slice,
+```
+  // Each func(interface{}, func(interface{}))
+
+  var buffer bytes.Buffer
+
+  s := []string{"a", "b", "c", "d"}
+
+  fn := func(s interface{}) {
+    buffer.WriteString(s.(string))
+  }
+
+  e := un.Each(s, fn)
+  fmt.Println(e) //["abcde"]
+```
+
+Typed Each can be defined using a function type and the *MakeEach* helper.
+
+```
+  var sum int
+
+  fn := func(i int) {
+    sum += i
+  }
+
+  i := []int{1, 2, 3, 4, 5}
+  EachInt(i, fn)
+
+  fmt.Printf("%#v\n", sum) //15
+```
+
+Of note is the ability to close over variables within the calling scope.
+
+
 ### Map ###
 ---------------------------------------------------------------------------
 
 Map func([]A, func(A) B) []B
 
-Map accepts a slice or map and a function to produce a new collection.
+Applies the given function to each element of a slice, returning a slice of results
 
 The base Map function accepts interface{} types and returns []interface{}
 
@@ -33,7 +72,7 @@ The base Map function accepts interface{} types and returns []interface{}
     return s.(string) + "!"
   }
 
-  m := un.Map(ToI(slice), fn)
+  m := un.Map(ToI(s), fn)
   fmt.Println(m) //["a!", "b!", "c!", "d!"]
 ```
 
@@ -49,7 +88,7 @@ Typed Maps can be defined using a function type and the *MakeMap* helper.
   fmt.Println(m) //["a!", "b!", "c!", "d!"]
 ```
 
-Of note is the return value of Map is a slice of the return type of the operant function.
+Of note is the return value of Map is a slice of the return type of the applied function.
 
 
 ### Partition ###
@@ -77,7 +116,7 @@ The base Partition function accepts interface{} types and returns []interface{}
   fmt.Println(even) //[2, 4, 6, 8, 10]
 ```
 
-Typed Partitions can be defined using a function type and the *MakeMap* helper.
+Typed Partitions can be defined using a function type and the *MakePartition* helper.
 
 ```
   // Partition func([]A, func(A) bool) ([]A []A)

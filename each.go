@@ -1,13 +1,12 @@
 package un
 
 import (
-	"fmt"
 	"reflect"
 )
 
 func init() {
-	fmt.Println()
 	MakeEach(&Each)
+	MakeEach(&EachInt)
 }
 
 /**
@@ -15,6 +14,8 @@ func init() {
 **/
 
 var Each func(interface{}, func(interface{}))
+
+var EachInt func([]int, func(int))
 
 func MakeEach(fn interface{}) {
 	Maker(fn, _each)
@@ -29,7 +30,7 @@ func _each(values []reflect.Value) []reflect.Value {
 		fn.Call([]reflect.Value{e})
 	}
 
- 	return nil
+	return nil
 }
 
 /**
