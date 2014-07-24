@@ -21,7 +21,8 @@ This package is in heavy flux at the moment as I work to incorporate feedback fr
 Each func([]A, func(A))
 
 Applies the given function to each element of a slice,
-```
+
+``` go
   // Each func(interface{}, func(interface{}))
 
   var buffer bytes.Buffer
@@ -38,7 +39,7 @@ Applies the given function to each element of a slice,
 
 Typed Each can be defined using a function type and the *MakeEach* helper.
 
-```
+``` go
   var sum int
 
   fn := func(i int) {
@@ -57,13 +58,15 @@ Of note is the ability to close over variables within the calling scope.
 ### Map ###
 ---------------------------------------------------------------------------
 
+``` go
 Map func([]A, func(A) B) []B
+```
 
 Applies the given function to each element of a slice, returning a slice of results
 
 The base Map function accepts interface{} types and returns []interface{}
 
-```
+``` go
   // Map func(interface{}, func(interface{}) interface{}) []interface{}
 
   s := []string{"a", "b", "c", "d"}
@@ -78,7 +81,7 @@ The base Map function accepts interface{} types and returns []interface{}
 
 Typed Maps can be defined using a function type and the *MakeMap* helper.
 
-```
+``` go
   Map func([]A, func(A) B) []B
 
   var SMap func([]string, func(string) string) []string
@@ -101,7 +104,7 @@ Partition splits a slice or map based on the evaluation of the supplied function
 The base Partition function accepts interface{} types and returns []interface{}
 
 
-```
+``` go
   // Partition func(interface{}, func(interface{}) bool) ([]interface{}, []interface{})
 
   s := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
@@ -118,7 +121,7 @@ The base Partition function accepts interface{} types and returns []interface{}
 
 Typed Partitions can be defined using a function type and the *MakePartition* helper.
 
-```
+``` go
   // Partition func([]A, func(A) bool) ([]A []A)
 
   var IPartition func([]int, func(int) bool) ([]int, []int)
@@ -139,7 +142,8 @@ Typed Partitions can be defined using a function type and the *MakePartition* he
 
 
 Contains returns true if an object is in a slice.
-```
+
+``` go
   o := "a"
   s := []string{"a", "b", "c"}
 
@@ -150,7 +154,7 @@ Contains returns true if an object is in a slice.
 
 ToI converts a slice of arbitrary type []T into a slice of []interfaces{}
 
-```
+``` go
   s := []int{1, 1, 3, 5, 8, 13}
   i := un.ToI(s)
 ```
