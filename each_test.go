@@ -2,6 +2,7 @@ package un
 
 import (
 	"bytes"
+	"fmt"
 	"testing"
 )
 
@@ -50,3 +51,24 @@ func TestRefEach(t *testing.T) {
 		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
 	}
 }
+
+func TestRefPEach(t *testing.T) {
+	var buffer bytes.Buffer
+
+	fn := func(s string) {
+		fmt.Println(s)
+		buffer.WriteString(s)
+	}
+
+	RefPEach(SLICE_STRING, fn)
+
+	expect := "abcdefghijklmnopqrstuvwxyz"
+
+	fmt.Println(buffer.String())
+	fmt.Println("-------")
+
+	if receive := buffer.String(); expect != receive {
+		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
+	}
+}
+
