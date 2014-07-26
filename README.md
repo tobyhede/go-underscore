@@ -9,9 +9,24 @@ A useful collection of Go utilities. Designed for programmer happiness.
 TL;DR Sort-of like underscore.js, but for Go
 
 
-:warning: Alert :warning:
+:warning: Warning
 ------------------------------------------
 This package is in heavy flux at the moment as I work to incorporate feedback from various sources.
+
+
+:squirrel: Todo
+------------------------------------------
+
+* refactor to make functions first parameter (eg Each func(func(A), []A))
+* godoc
+* none
+* all
+* any
+* contains
+* indexOf
+* pMap (parallel)
+* handle maps collections
+
 
 
 

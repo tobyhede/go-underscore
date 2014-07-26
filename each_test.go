@@ -59,7 +59,7 @@ func TestRefPEach(t *testing.T) {
 		ch <- s
 	}
 
- 	go func() {
+	go func() {
 		RefPEach(SLICE_STRING, fn)
 		close(ch)
 	}()
