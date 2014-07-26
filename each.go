@@ -7,6 +7,7 @@ import (
 )
 
 func init() {
+	fmt.Println("")
 	MakeEach(&Each)
 	MakeEach(&EachInt)
 }
@@ -14,7 +15,7 @@ func init() {
 // Each func(func(A), []A)
 // Applies the given function to each item of a slice or map
 // Note: unlike map, each does not return a collection
-var Each func(interface{}, func(interface{}))
+var Each func(func(interface{}), interface{})
 
 // EachInt on a slice of ints
 var EachInt func(func(int), []int)
@@ -25,8 +26,24 @@ func MakeEach(fn interface{}) {
 }
 
 func _each(values []reflect.Value) []reflect.Value {
-	v := iToValue(values[0])
-	fn := values[1]
+	fn := values[0]
+
+	v := iToValue(values[1])
+
+	for i := 0; i < v.Len(); i++ {
+		e := v.Index(i)
+		fn.Call([]reflect.Value{e})
+	}
+
+	return nil
+}
+
+func _pEach(values []reflect.Value) []reflect.Value {
+	// var done sync.WaitGroup
+
+	fn := values[0]
+
+	v := iToValue(values[1])
 
 	for i := 0; i < v.Len(); i++ {
 		e := v.Index(i)
@@ -55,14 +72,13 @@ func RefPEach(slice []string, fn func(string)) {
 	for i := 0; i < l; i++ {
 		s := slice[i]
 		done.Add(1)
-		go func(s string) {
+		go func() {
 			fn(s)
 			done.Done()
-		}(s)
+		}()
 	}
 
 	done.Wait()
-	fmt.Println("end")
 }
 
 // type empty {}

@@ -13,7 +13,7 @@ func TestEach(t *testing.T) {
 		buffer.WriteString(s.(string))
 	}
 
-	Each(SLICE_STRING, fn)
+	Each(fn, SLICE_STRING)
 
 	expect := "abcdefghijklmnopqrstuvwxyz"
 
@@ -29,7 +29,7 @@ func TestEachInt(t *testing.T) {
 		receive += i
 	}
 
-	EachInt(SLICE_INT, fn)
+	EachInt(fn, SLICE_INT)
 
 	if expect := 45; expect != receive {
 		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
@@ -53,12 +53,20 @@ func TestRefEach(t *testing.T) {
 func TestRefPEach(t *testing.T) {
 	var buffer bytes.Buffer
 
+	ch := make(chan string)
+
 	fn := func(s string) {
-		fmt.Println(s)
-		buffer.WriteString(s)
+		ch <- s
 	}
 
-	RefPEach(SLICE_STRING, fn)
+ 	go func() {
+		RefPEach(SLICE_STRING, fn)
+		close(ch)
+	}()
+
+	for s := range ch {
+		buffer.WriteString(s)
+	}
 
 	expect := "abcdefghijklmnopqrstuvwxyz"
 
