@@ -24,7 +24,7 @@ func MakePartition(fn interface{}) {
 }
 
 func _partition(values []reflect.Value) []reflect.Value {
-	slice := iToValue(values[0])
+	slice := interfaceToValue(values[0])
 	fn := values[1]
 
 	var t, f reflect.Value

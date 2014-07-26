@@ -28,7 +28,9 @@ func MakeEach(fn interface{}) {
 func _each(values []reflect.Value) []reflect.Value {
 	fn := values[0]
 
-	v := iToValue(values[1])
+	fmt.Println(values[1])
+	v := interfaceToValue(values[1])
+	v := values[1]
 
 	for i := 0; i < v.Len(); i++ {
 		e := v.Index(i)
@@ -43,7 +45,7 @@ func _pEach(values []reflect.Value) []reflect.Value {
 
 	fn := values[0]
 
-	v := iToValue(values[1])
+	v := interfaceToValue(values[1])
 
 	for i := 0; i < v.Len(); i++ {
 		e := v.Index(i)

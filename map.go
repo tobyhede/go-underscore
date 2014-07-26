@@ -29,7 +29,7 @@ func MakeMap(fn interface{}) {
 
 func _map(values []reflect.Value) []reflect.Value {
 
-	v := iToValue(values[0])
+	v := interfaceToValue(values[0])
 	fn := values[1]
 
 	var ret reflect.Value

@@ -34,7 +34,7 @@ func wrap(v reflect.Value) []reflect.Value {
 	return []reflect.Value{v}
 }
 
-func iToValue(v reflect.Value) reflect.Value {
+func interfaceToValue(v reflect.Value) reflect.Value {
 	if v.Kind() == reflect.Interface {
 		return reflect.ValueOf(v.Interface())
 	}
