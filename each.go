@@ -63,14 +63,8 @@ func RefEach(slice []string, fn func(string)) {
 // Reference Parallel Each Implementation
 func RefPEach(slice []string, fn func(string)) {
 	var done sync.WaitGroup
-
-	l := len(slice)
-
-	// sem := make(semaphore, l)
-	// close(sem)
-
-	for i := 0; i < l; i++ {
-		s := slice[i]
+	for _, s := range slice {
+		s := s
 		done.Add(1)
 		go func() {
 			fn(s)
