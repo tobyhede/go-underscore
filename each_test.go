@@ -47,9 +47,7 @@ func TestRefEach(t *testing.T) {
 
 	expect := "abcdefghijklmnopqrstuvwxyz"
 
-	if receive := buffer.String(); expect != receive {
-		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
-	}
+	equals(t, expect, buffer.String())
 }
 
 func TestRefPEach(t *testing.T) {
@@ -67,8 +65,5 @@ func TestRefPEach(t *testing.T) {
 	fmt.Println(buffer.String())
 	fmt.Println("-------")
 
-	if receive := buffer.String(); expect != receive {
-		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
-	}
+	equals(t, expect, buffer.String())
 }
-

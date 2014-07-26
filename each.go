@@ -11,14 +11,15 @@ func init() {
 	MakeEach(&EachInt)
 }
 
-/**
-	Each func([]A, func(A))
-**/
-
+// Each func(func(A), []A)
+// Applies the given function to each item of a slice or map
+// Note: unlike map, each does not return a collection
 var Each func(interface{}, func(interface{}))
 
-var EachInt func([]int, func(int))
+// EachInt on a slice of ints
+var EachInt func(func(int), []int)
 
+// MakeEach implements a typed Each function in the form Each func(func(A), []A)
 func MakeEach(fn interface{}) {
 	Maker(fn, _each)
 }
@@ -35,20 +36,16 @@ func _each(values []reflect.Value) []reflect.Value {
 	return nil
 }
 
-/**
-	Reference Each Implementations
-**/
+// Reference Each Implementation
 func RefEach(slice []string, fn func(string)) {
 	for i := 0; i < len(slice); i++ {
 		fn(slice[i])
 	}
 }
 
-
-type semaphore chan struct{}
-
+// Reference Parallel Each Implementation
 func RefPEach(slice []string, fn func(string)) {
-    var done sync.WaitGroup
+	var done sync.WaitGroup
 
 	l := len(slice)
 
@@ -61,7 +58,7 @@ func RefPEach(slice []string, fn func(string)) {
 		go func(s string) {
 			fn(s)
 			done.Done()
-		} (s)
+		}(s)
 	}
 
 	done.Wait()
@@ -82,5 +79,3 @@ func RefPEach(slice []string, fn func(string)) {
 // }
 // // wait for goroutines to finish
 // for i := 0; i < N; ++i { <-sem }
-
-

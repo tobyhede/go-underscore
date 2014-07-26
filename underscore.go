@@ -7,12 +7,15 @@ import (
 func init() {
 }
 
-func Maker(wrapper interface{}, fn func(args []reflect.Value) (results []reflect.Value)) {
-	wrapperFn := reflect.ValueOf(wrapper).Elem()
-	v := reflect.MakeFunc(wrapperFn.Type(), fn)
-	wrapperFn.Set(v)
+// Maker takes a function pointer (fn) and implements it with the given reflection-based function implementation
+// Internally uses reflect.MakeFunc
+func Maker(fn interface{}, impl func(args []reflect.Value) (results []reflect.Value)) {
+	fnV := reflect.ValueOf(fn).Elem()
+	fnI := reflect.MakeFunc(fnV.Type(), impl)
+	fnV.Set(fnI)
 }
 
+// ToI takes a slice and converts it to type []interface[]
 func ToI(slice interface{}) []interface{} {
 	s := reflect.ValueOf(slice)
 	if s.Kind() != reflect.Slice {
