@@ -35,8 +35,8 @@ func _each(values []reflect.Value) []reflect.Value {
 
 	if list.Kind() == reflect.Slice {
 		for i := 0; i < list.Len(); i++ {
-			e := list.Index(i)
-			fn.Call([]reflect.Value{e})
+			v := list.Index(i)
+			fn.Call([]reflect.Value{v, i})
 		}
 	}
 
