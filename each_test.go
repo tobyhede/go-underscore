@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-
 func init() {
 	display("Testing Each")
 }

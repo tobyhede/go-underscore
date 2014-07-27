@@ -52,7 +52,6 @@ func inspect(i interface{}) {
 	fmt.Printf("\033[32m%#v\033[39m\n", i)
 }
 
-
 func TestToI(t *testing.T) {
 	i := ToI(SLICE_STRING)
 

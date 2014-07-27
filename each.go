@@ -36,7 +36,8 @@ func _each(values []reflect.Value) []reflect.Value {
 	if list.Kind() == reflect.Slice {
 		for i := 0; i < list.Len(); i++ {
 			v := list.Index(i)
-			fn.Call([]reflect.Value{v, i})
+
+			fn.Call([]reflect.Value{v})
 		}
 	}
 
@@ -79,18 +80,3 @@ func RefPEach(slice []string, fn func(string)) {
 
 	done.Wait()
 }
-
-// type empty {}
-// ...
-// data := make([]float, N);
-// res := make([]float, N);
-// sem := make(chan empty, N);  // semaphore pattern
-// ...
-// for i,xi := range data {
-//     go func (i int, xi float) {
-//         res[i] = doSomething(i,xi);
-//         sem <- empty{};
-//     } (i, xi);
-// }
-// // wait for goroutines to finish
-// for i := 0; i < N; ++i { <-sem }
