@@ -1,13 +1,11 @@
 package un
 
 import (
-	"fmt"
 	"reflect"
 	"sync"
 )
 
 func init() {
-	fmt.Println("")
 	MakeEach(&Each)
 	MakeEach(&EachInt)
 }
@@ -27,14 +25,19 @@ func MakeEach(fn interface{}) {
 
 func _each(values []reflect.Value) []reflect.Value {
 	fn := values[0]
+	list := interfaceToValue(values[1])
 
-	fmt.Println(values[1])
-	v := interfaceToValue(values[1])
-	v := values[1]
+	if list.Kind() == reflect.Map {
+		for _, v := range list.MapKeys() {
+			fn.Call([]reflect.Value{v})
+		}
+	}
 
-	for i := 0; i < v.Len(); i++ {
-		e := v.Index(i)
-		fn.Call([]reflect.Value{e})
+	if list.Kind() == reflect.Slice {
+		for i := 0; i < list.Len(); i++ {
+			e := list.Index(i)
+			fn.Call([]reflect.Value{e})
+		}
 	}
 
 	return nil

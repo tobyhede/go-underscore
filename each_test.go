@@ -2,9 +2,13 @@ package un
 
 import (
 	"bytes"
-	"fmt"
 	"testing"
 )
+
+
+func init() {
+	display("Testing Each")
+}
 
 func TestEach(t *testing.T) {
 	var buffer bytes.Buffer
@@ -17,9 +21,22 @@ func TestEach(t *testing.T) {
 
 	expect := "abcdefghijklmnopqrstuvwxyz"
 
-	if receive := buffer.String(); expect != receive {
-		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
+	equals(t, expect, buffer.String())
+}
+
+func TestEachWithMap(t *testing.T) {
+	var buffer bytes.Buffer
+
+	fn := func(s interface{}) {
+		buffer.WriteString(s.(string))
 	}
+
+	Each(fn, MAP_STRING_TO_INT)
+
+	expect := "abcdefghijklmnopqrstuvwxyz"
+	receive := buffer.String()
+	equals(t, len(expect), len(receive))
+
 }
 
 func TestEachInt(t *testing.T) {
@@ -31,9 +48,8 @@ func TestEachInt(t *testing.T) {
 
 	EachInt(fn, SLICE_INT)
 
-	if expect := 45; expect != receive {
-		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
-	}
+	expect := 45
+	equals(t, expect, receive)
 }
 
 func TestRefEach(t *testing.T) {
@@ -69,9 +85,6 @@ func TestRefPEach(t *testing.T) {
 	}
 
 	expect := "abcdefghijklmnopqrstuvwxyz"
-
-	fmt.Println(buffer.String())
-	fmt.Println("-------")
 
 	equals(t, expect, buffer.String())
 }

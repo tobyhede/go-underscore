@@ -49,7 +49,7 @@ Applies the given function to each element of a slice,
   }
 
   e := un.Each(s, fn)
-  fmt.Println(e) //["abcde"]
+  fmt.Printf("%#v\n", e) //["abcde"]
 ```
 
 Typed Each can be defined using a function type and the *MakeEach* helper.
