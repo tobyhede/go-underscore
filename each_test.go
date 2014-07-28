@@ -10,24 +10,24 @@ func init() {
 	display("Testing Each")
 }
 
-// func TestEach(t *testing.T) {
-// 	var buffer bytes.Buffer
+func TestEach(t *testing.T) {
+	var buffer bytes.Buffer
 
-// 	fn := func(s interface{}) {
-// 		buffer.WriteString(s.(string))
-// 	}
+	fn := func(s, i interface{}) {
+		buffer.WriteString(s.(string))
+	}
 
-// 	Each(fn, SLICE_STRING)
+	Each(fn, SLICE_STRING)
 
-// 	expect := "abcdefghijklmnopqrstuvwxyz"
+	expect := "abcdefghijklmnopqrstuvwxyz"
 
-// 	equals(t, expect, buffer.String())
-// }
+	equals(t, expect, buffer.String())
+}
 
 func TestEachWithMap(t *testing.T) {
 	var buffer bytes.Buffer
 
-	fn := func(k, v interface{}) {
+	fn := func(v, k interface{}) {
 		buffer.WriteString(k.(string))
 		buffer.WriteString(strconv.Itoa(v.(int)))
 	}
@@ -38,7 +38,21 @@ func TestEachWithMap(t *testing.T) {
 	receive := buffer.String()
 
 	equals(t, len(expect), len(receive))
+}
 
+func TestEachStringInt(t *testing.T) {
+	var receive int
+
+	fn := func(v int, k string) {
+		receive += v
+	}
+
+	m := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
+
+	EachStringInt(fn, m)
+
+	expect := 15
+	equals(t, expect, receive)
 }
 
 func TestEachInt(t *testing.T) {

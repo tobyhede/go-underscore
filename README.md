@@ -25,7 +25,7 @@ This package is in heavy flux at the moment as I work to incorporate feedback fr
 * contains
 * indexOf
 * pMap (parallel)
-* handle maps collections
+* handle maps
 
 
 
@@ -33,37 +33,63 @@ This package is in heavy flux at the moment as I work to incorporate feedback fr
 ### Each ###
 ---------------------------------------------------------------------------
 
-Each func([]A, func(A))
+Each func(func(A int), []A)
+Each func(func(A B), []A)
 
-Applies the given function to each element of a slice,
+Applies the given iterator function to each element of a collection (slice or map).
+
+If the collection is a Slice, the iterator function argumments are *value, index*
+
+If the collection is a Map, the iterator function argumments are *value, key*
 
 ``` go
-  // Each func(interface{}, func(interface{}))
+  // var Each func(func(value interface{}, i interface{}), interface{})
 
   var buffer bytes.Buffer
 
-  s := []string{"a", "b", "c", "d"}
-
-  fn := func(s interface{}) {
+  fn := func(s, i interface{}) {
     buffer.WriteString(s.(string))
   }
 
-  e := un.Each(s, fn)
-  fmt.Printf("%#v\n", e) //["abcde"]
+  Each(fn, SLICE_STRING)
+
+  expect := "abcde"
+
+  e := un.Each(fn, s)
+  fmt.Printf("%#v\n", e) //"abcde"
 ```
 
 Typed Each can be defined using a function type and the *MakeEach* helper.
 
+Using a Typed Slice
+
 ``` go
+  var EachInt func(func(value, i int), []int)
+  MakeEach(&EachInt)
+
   var sum int
 
-  fn := func(i int) {
-    sum += i
+  fn := func(v, i int) {
+    receive += v
   }
 
   i := []int{1, 2, 3, 4, 5}
-  EachInt(i, fn)
+  EachInt(fn, i)
 
+  fmt.Printf("%#v\n", sum) //15
+```
+
+Using a Typed Map
+``` go
+  var EachStringInt func(func(key string, value int), map[string]int)
+  var sum int
+
+  fn := func(v int, k string) {
+    receive += v
+  }
+
+  m := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
+  EachStringInt(fn, m)
   fmt.Printf("%#v\n", sum) //15
 ```
 

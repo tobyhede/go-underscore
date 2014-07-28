@@ -8,15 +8,19 @@ import (
 func init() {
 	MakeEach(&Each)
 	MakeEach(&EachInt)
+	MakeEach(&EachStringInt)
 }
 
 // Each func(func(A B), []A)
 // Applies the given function to each item of a slice or map
 // Note: unlike map, each does not return a collection
-var Each func(func(interface{}, interface{}), interface{})
+var Each func(func(value interface{}, i interface{}), interface{})
 
 // EachInt on a slice of ints
 var EachInt func(func(value, i int), []int)
+
+// EachStringInt operates on a map[string]int
+var EachStringInt func(func(value int, key string), map[string]int)
 
 // MakeEach implements a typed Each function in the form Each func(func(A), []A)
 func MakeEach(fn interface{}) {
@@ -48,7 +52,7 @@ func eachSlice(fn, s reflect.Value) {
 func eachMap(fn, m reflect.Value) {
 	for _, k := range m.MapKeys() {
 		v := m.MapIndex(k)
-		fn.Call(Valueize(k, v))
+		fn.Call(Valueize(v, k))
 	}
 }
 
