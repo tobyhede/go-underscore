@@ -38,9 +38,9 @@ Each func(func(A B), []A)
 
 Applies the given iterator function to each element of a collection (slice or map).
 
-If the collection is a Slice, the iterator function argumments are *value, index*
+If the collection is a Slice, the iterator function arguments are *value, index*
 
-If the collection is a Map, the iterator function argumments are *value, key*
+If the collection is a Map, the iterator function arguments are *value, key*
 
 ``` go
   // var Each func(func(value interface{}, i interface{}), interface{})
@@ -51,7 +51,8 @@ If the collection is a Map, the iterator function argumments are *value, key*
     buffer.WriteString(s.(string))
   }
 
-  Each(fn, SLICE_STRING)
+  s := []string{"a", "b", "c", "d", "e"}
+  Each(fn, s)
 
   expect := "abcde"
 
@@ -90,6 +91,7 @@ Using a Typed Map
 
   m := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
   EachStringInt(fn, m)
+
   fmt.Printf("%#v\n", sum) //15
 ```
 
