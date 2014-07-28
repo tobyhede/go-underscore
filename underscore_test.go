@@ -52,6 +52,13 @@ func inspect(i interface{}) {
 	fmt.Printf("\033[32m%#v\033[39m\n", i)
 }
 
+func TestValueize(t *testing.T) {
+	i := reflect.ValueOf(42)
+	s := reflect.ValueOf("42")
+	res := Valueize(i, s)
+	equals(t, res, []reflect.Value{i, s})
+}
+
 func TestToI(t *testing.T) {
 	i := ToI(SLICE_STRING)
 

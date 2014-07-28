@@ -10,38 +10,46 @@ func init() {
 	MakeEach(&EachInt)
 }
 
-// Each func(func(A), []A)
+// Each func(func(A B), []A)
 // Applies the given function to each item of a slice or map
 // Note: unlike map, each does not return a collection
-var Each func(func(interface{}), interface{})
+var Each func(func(interface{}, interface{}), interface{})
 
 // EachInt on a slice of ints
-var EachInt func(func(int), []int)
+var EachInt func(func(value, i int), []int)
 
 // MakeEach implements a typed Each function in the form Each func(func(A), []A)
 func MakeEach(fn interface{}) {
-	Maker(fn, _each)
+	Maker(fn, each)
 }
 
-func _each(values []reflect.Value) []reflect.Value {
+func each(values []reflect.Value) []reflect.Value {
 	fn := values[0]
 	list := interfaceToValue(values[1])
 
 	if list.Kind() == reflect.Map {
-		for _, v := range list.MapKeys() {
-			fn.Call([]reflect.Value{v})
-		}
+		eachMap(fn, list)
 	}
 
 	if list.Kind() == reflect.Slice {
-		for i := 0; i < list.Len(); i++ {
-			v := list.Index(i)
-
-			fn.Call([]reflect.Value{v})
-		}
+		eachSlice(fn, list)
 	}
 
 	return nil
+}
+
+func eachSlice(fn, s reflect.Value) {
+	for i := 0; i < s.Len(); i++ {
+		v := s.Index(i)
+		fn.Call(Valueize(v, reflect.ValueOf(i)))
+	}
+}
+
+func eachMap(fn, m reflect.Value) {
+	for _, k := range m.MapKeys() {
+		v := m.MapIndex(k)
+		fn.Call(Valueize(k, v))
+	}
 }
 
 func _pEach(values []reflect.Value) []reflect.Value {

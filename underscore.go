@@ -30,10 +30,13 @@ func ToI(slice interface{}) []interface{} {
 	return ret
 }
 
-func wrap(v reflect.Value) []reflect.Value {
-	return []reflect.Value{v}
+// Valueize takes a number of arguments and returns them as []reflect.Value
+func Valueize(values ...reflect.Value) []reflect.Value {
+	return values
 }
 
+// InterfaceToValue converts a value of interface{} to a value of Interface()
+// That is, converts to the underlying type of the reflect.Value
 func interfaceToValue(v reflect.Value) reflect.Value {
 	if v.Kind() == reflect.Interface {
 		return reflect.ValueOf(v.Interface())
