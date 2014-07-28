@@ -8,6 +8,10 @@ A useful collection of Go utilities. Designed for programmer happiness.
 
 TL;DR Sort-of like underscore.js, but for Go
 
+API Documention
+------------------------------------------
+[GoDoc is WorkInProgress](https://godoc.org/github.com/tobyhede/go-underscore)
+
 
 :warning: Warning
 ------------------------------------------
