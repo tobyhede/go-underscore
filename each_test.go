@@ -75,7 +75,7 @@ func TestRefEach(t *testing.T) {
 		buffer.WriteString(s)
 	}
 
-	RefEach(SLICE_STRING, fn)
+	refEach(SLICE_STRING, fn)
 
 	expect := "abcdefghijklmnopqrstuvwxyz"
 
@@ -92,7 +92,7 @@ func TestRefPEach(t *testing.T) {
 	}
 
 	go func() {
-		RefPEach(SLICE_STRING, fn)
+		refPEach(SLICE_STRING, fn)
 		close(ch)
 	}()
 

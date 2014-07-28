@@ -11,18 +11,24 @@ func init() {
 	MakeEach(&EachStringInt)
 }
 
-// Each func(func(A B), []A)
-// Applies the given function to each item of a slice or map
-// Note: unlike map, each does not return a collection
+// Each func(func(A, B), []A)
+// Applies the given iterator function to each element of a collection (slice or map).
+// If the collection is a Slice, the iterator function arguments are *value, index*
+// If the collection is a Map, the iterator function arguments are *value, key*
+// Note: each does not return a value, you may want un.Map
 var Each func(func(value interface{}, i interface{}), interface{})
 
-// EachInt on a slice of ints
+// EachInt
+// Applies the given iterator function to each element of []int
+// Iterator function arguments are *value, index*
 var EachInt func(func(value, i int), []int)
 
-// EachStringInt operates on a map[string]int
+// EachStringInt
+// Applies the given iterator function to each element of map[string]int
+// Iterator function arguments are *value, key*
 var EachStringInt func(func(value int, key string), map[string]int)
 
-// MakeEach implements a typed Each function in the form Each func(func(A), []A)
+// MakeEach implements a typed Each function in the form Each func(func(A, B), []A)
 func MakeEach(fn interface{}) {
 	Maker(fn, each)
 }
@@ -56,6 +62,7 @@ func eachMap(fn, m reflect.Value) {
 	}
 }
 
+// WIP
 func _pEach(values []reflect.Value) []reflect.Value {
 	// var done sync.WaitGroup
 
@@ -72,14 +79,14 @@ func _pEach(values []reflect.Value) []reflect.Value {
 }
 
 // Reference Each Implementation
-func RefEach(slice []string, fn func(string)) {
+func refEach(slice []string, fn func(string)) {
 	for i := 0; i < len(slice); i++ {
 		fn(slice[i])
 	}
 }
 
 // Reference Parallel Each Implementation
-func RefPEach(slice []string, fn func(string)) {
+func refPEach(slice []string, fn func(string)) {
 	var done sync.WaitGroup
 	for _, s := range slice {
 		s := s
