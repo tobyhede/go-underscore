@@ -6,12 +6,19 @@ import (
 
 func init() {
 	MakeEvery(&Every)
+	MakeEvery(&EveryInt)
 }
 
 // Every func(func(A, bool), bool)
 // Returns true if all values in the collection (slice or map) pass the predicate truth test
-// Note: each does not return a value, you may want un.Map
-var Every func(func(value interface{}) bool, interface{}) bool
+
+// var Every func(func(value interface{}) bool, interface{}) bool
+var Every func(fn, slice_or_map interface{}) bool
+
+// EveryInt
+// Returns true if all values in a []int pass the predicate truth test
+// Predicate function accepts an int and returns a boolean
+var EveryInt func(func(value int) bool, []int) bool
 
 // MakeEach implements a typed Each function in the form Each func(func(A, B), []A)
 func MakeEvery(fn interface{}) {
@@ -19,7 +26,7 @@ func MakeEvery(fn interface{}) {
 }
 
 func every(values []reflect.Value) []reflect.Value {
-	fn := values[0]
+	fn := interfaceToValue(values[0])
 	list := interfaceToValue(values[1])
 
 	var ret bool

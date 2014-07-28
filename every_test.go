@@ -10,6 +10,7 @@ func init() {
 
 func TestEverySlice(t *testing.T) {
 	title("Slice")
+
 	fn := func(s interface{}) bool {
 		return true
 	}
@@ -22,12 +23,26 @@ func TestEverySlice(t *testing.T) {
 
 func TestEveryMap(t *testing.T) {
 	title("Map")
+
 	fn := func(s interface{}) bool {
 		return true
 	}
 
 	m := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
 	result := Every(fn, m)
+
+	equals(t, true, result)
+}
+
+func TestEverySliceWithInt(t *testing.T) {
+	title("Slice With Int")
+
+	fn := func(i int) bool {
+		return i <= 5
+	}
+
+	s := []int{1, 2, 3, 4, 5}
+	result := EveryInt(fn, s)
 
 	equals(t, true, result)
 }
