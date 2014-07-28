@@ -7,10 +7,11 @@ import (
 )
 
 func init() {
-	display("Testing Each")
+	suite("Each")
 }
 
 func TestEach(t *testing.T) {
+	title("Each with []interface{}")
 	var buffer bytes.Buffer
 
 	fn := func(s, i interface{}) {
@@ -25,6 +26,7 @@ func TestEach(t *testing.T) {
 }
 
 func TestEachWithMap(t *testing.T) {
+	title("Each with map interface{}")
 	var buffer bytes.Buffer
 
 	fn := func(v, k interface{}) {
@@ -41,6 +43,7 @@ func TestEachWithMap(t *testing.T) {
 }
 
 func TestEachStringInt(t *testing.T) {
+	title("Each with map[string]int")
 	var receive int
 
 	fn := func(v int, k string) {
@@ -56,6 +59,7 @@ func TestEachStringInt(t *testing.T) {
 }
 
 func TestEachInt(t *testing.T) {
+	title("Each with []int")
 	var receive int
 
 	fn := func(v, i int) {
