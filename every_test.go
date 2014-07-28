@@ -5,10 +5,11 @@ import (
 )
 
 func init() {
-	display("Testing Every")
+	suite("Every")
 }
 
-func TestEveryS(t *testing.T) {
+func TestEverySlice(t *testing.T) {
+	title("Slice")
 	fn := func(s interface{}) bool {
 		return true
 	}
@@ -20,6 +21,7 @@ func TestEveryS(t *testing.T) {
 }
 
 func TestEveryMap(t *testing.T) {
+	title("Map")
 	fn := func(s interface{}) bool {
 		return true
 	}
@@ -30,7 +32,8 @@ func TestEveryMap(t *testing.T) {
 	equals(t, true, result)
 }
 
-func TestEveryMapInt(t *testing.T) {
+func TestEveryMapWithInt(t *testing.T) {
+	title("Map With Int")
 	fn := func(i interface{}) bool {
 		return i.(int) <= 5
 	}

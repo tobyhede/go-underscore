@@ -37,8 +37,7 @@ func every(values []reflect.Value) []reflect.Value {
 func everySlice(fn, s reflect.Value) bool {
 	for i := 0; i < s.Len(); i++ {
 		v := s.Index(i)
-		res := fn.Call(Valueize(v))
-		if ok := res[0].Interface().(bool); !ok {
+		if ok := predicate(fn, v); !ok {
 			return false
 		}
 	}
@@ -48,10 +47,14 @@ func everySlice(fn, s reflect.Value) bool {
 func everyMap(fn, m reflect.Value) bool {
 	for _, k := range m.MapKeys() {
 		v := m.MapIndex(k)
-		res := fn.Call(Valueize(v))
-		if ok := res[0].Interface().(bool); !ok {
+		if ok := predicate(fn, v); !ok {
 			return false
 		}
 	}
 	return true
+}
+
+func predicate(fn, v reflect.Value) bool {
+	res := fn.Call(Valueize(v))
+	return res[0].Interface().(bool)
 }

@@ -52,6 +52,15 @@ func inspect(i interface{}) {
 	fmt.Printf("\033[32m%#v\033[39m\n", i)
 }
 
+func suite(i interface{}) {
+	display(i)
+}
+
+func title(i interface{}) {
+	s := fmt.Sprintf("- %v", i)
+	display(s)
+}
+
 func TestValueize(t *testing.T) {
 	i := reflect.ValueOf(42)
 	s := reflect.ValueOf("42")
