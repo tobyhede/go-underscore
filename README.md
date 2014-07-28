@@ -57,6 +57,7 @@ If the collection is a Map, the iterator function arguments are *value, key*
   expect := "abcde"
 
   e := un.Each(fn, s)
+
   fmt.Printf("%#v\n", e) //"abcde"
 ```
 
