@@ -5,7 +5,7 @@ import (
 )
 
 func init() {
-	suite("Every")
+	// suite("Every")
 }
 
 func TestEverySlice(t *testing.T) {

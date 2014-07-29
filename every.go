@@ -63,5 +63,5 @@ func everyMap(fn, m reflect.Value) bool {
 
 func predicate(fn, v reflect.Value) bool {
 	res := fn.Call(Valueize(v))
-	return res[0].Interface().(bool)
+	return res[0].Bool()
 }

@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	suite("Each")
+	// suite("Each")
 }
 
 func TestEach(t *testing.T) {
@@ -37,6 +37,23 @@ func TestEachWithMap(t *testing.T) {
 	Each(fn, MAP_STRING_TO_INT)
 
 	expect := "abcdefghijklmnopqrstuvwxyz1234567891011121314151617181920212223242526"
+	receive := buffer.String()
+
+	equals(t, len(expect), len(receive))
+}
+
+func TestEachWithMapValueOnly(t *testing.T) {
+	title("Each with map interface{} and value iterator")
+
+	var buffer bytes.Buffer
+
+	fn := func(v interface{}) {
+		buffer.WriteString(strconv.Itoa(v.(int)))
+	}
+
+	Each(fn, MAP_STRING_TO_INT)
+
+	expect := "1234567891011121314151617181920212223242526"
 	receive := buffer.String()
 
 	equals(t, len(expect), len(receive))

@@ -16,7 +16,7 @@ func init() {
 // If the collection is a Slice, the iterator function arguments are *value, index*
 // If the collection is a Map, the iterator function arguments are *value, key*
 // Note: each does not return a value, you may want un.Map
-// var Each func(func(value interface{}, i interface{}), interface{})
+// var Each func(func(value, i interface{}), interface{})
 var Each func(interface{}, interface{})
 
 // EachInt
