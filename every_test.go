@@ -1,8 +1,6 @@
 package un
 
-import (
-	"testing"
-)
+import "testing"
 
 func init() {
 	// suite("Every")
@@ -35,7 +33,6 @@ func TestEveryMap(t *testing.T) {
 }
 
 func TestEverySliceWithInt(t *testing.T) {
-	title("Slice With Int")
 
 	fn := func(i int) bool {
 		return i <= 5
@@ -43,6 +40,19 @@ func TestEverySliceWithInt(t *testing.T) {
 
 	s := []int{1, 2, 3, 4, 5}
 	result := EveryInt(fn, s)
+
+	equals(t, true, result)
+}
+
+func TestEverySliceWithString(t *testing.T) {
+
+	fn := func(s string) bool {
+		// return strings.Contains(s, "!")
+		return true
+	}
+
+	s := []string{"a!", "b!", "c!", "d!", "e!"}
+	result := EveryString(fn, s)
 
 	equals(t, true, result)
 }

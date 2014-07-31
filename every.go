@@ -7,6 +7,7 @@ import (
 func init() {
 	MakeEvery(&Every)
 	MakeEvery(&EveryInt)
+	MakeEvery(&EveryString)
 }
 
 // Every func(func(A, bool), bool)
@@ -19,6 +20,11 @@ var Every func(fn, slice_or_map interface{}) bool
 // Returns true if all values in a []int pass the predicate truth test
 // Predicate function accepts an int and returns a boolean
 var EveryInt func(func(value int) bool, []int) bool
+
+// EveryString
+// Returns true if all values in a []string pass the predicate truth test
+// Predicate function accepts a string and returns a boolean
+var EveryString func(func(value string) bool, []string) bool
 
 // MakeEach implements a typed Each function in the form Each func(func(A, B), []A)
 func MakeEvery(fn interface{}) {

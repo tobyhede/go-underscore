@@ -8,6 +8,7 @@ import (
 func init() {
 	MakeEach(&Each)
 	MakeEach(&EachInt)
+	// MakeEach(&EachString)
 	MakeEach(&EachStringInt)
 }
 
@@ -18,6 +19,8 @@ func init() {
 // Note: each does not return a value, you may want un.Map
 // var Each func(func(value, i interface{}), interface{})
 var Each func(interface{}, interface{})
+
+// var EachI func(func(value, i interface{}), interface{})
 
 // EachInt
 // Applies the given iterator function to each element of []int
@@ -52,15 +55,23 @@ func each(values []reflect.Value) []reflect.Value {
 func eachSlice(fn, s reflect.Value) {
 	for i := 0; i < s.Len(); i++ {
 		v := s.Index(i)
-		fn.Call(Valueize(v, reflect.ValueOf(i)))
+		eachCall(fn, v, reflect.ValueOf(i))
 	}
 }
 
 func eachMap(fn, m reflect.Value) {
 	for _, k := range m.MapKeys() {
 		v := m.MapIndex(k)
-		fn.Call(Valueize(v, k))
+		eachCall(fn, v, k)
 	}
+}
+
+func eachCall(fn, v, i reflect.Value) {
+	args := Valueize(v)
+	if in := fn.Type().NumIn(); in == 2 {
+		args = append(args, i)
+	}
+	fn.Call(args)
 }
 
 // WIP
