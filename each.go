@@ -10,6 +10,7 @@ func init() {
 	MakeEach(&EachInt)
 	// MakeEach(&EachString)
 	MakeEach(&EachStringInt)
+	MakeEachP(&EachP)
 }
 
 // Each func(func(A, B), []A)
@@ -32,9 +33,15 @@ var EachInt func(func(value, i int), []int)
 // Iterator function arguments are *value, key*
 var EachStringInt func(func(value int, key string), map[string]int)
 
+var EachP func(interface{}, interface{})
+
 // MakeEach implements a typed Each function in the form Each func(func(A, B), []A)
 func MakeEach(fn interface{}) {
 	Maker(fn, each)
+}
+
+func MakeEachP(fn interface{}) {
+	Maker(fn, eachP)
 }
 
 func each(values []reflect.Value) []reflect.Value {
@@ -74,20 +81,46 @@ func eachCall(fn, v, i reflect.Value) {
 	fn.Call(args)
 }
 
-// WIP
-func _pEach(values []reflect.Value) []reflect.Value {
-	// var done sync.WaitGroup
+func eachP(values []reflect.Value) []reflect.Value {
 
-	fn := values[0]
+	fn := interfaceToValue(values[0])
+	list := interfaceToValue(values[1])
 
-	v := interfaceToValue(values[1])
+	if list.Kind() == reflect.Map {
+		eachMapP(fn, list)
+	}
 
-	for i := 0; i < v.Len(); i++ {
-		e := v.Index(i)
-		fn.Call([]reflect.Value{e})
+	if list.Kind() == reflect.Slice {
+		eachSliceP(fn, list)
 	}
 
 	return nil
+}
+
+func eachSliceP(fn, s reflect.Value) {
+	var done sync.WaitGroup
+	for i := 0; i < s.Len(); i++ {
+		v := s.Index(i)
+		done.Add(1)
+		go func() {
+			eachCall(fn, v, reflect.ValueOf(i))
+			done.Done()
+		}()
+	}
+	done.Wait()
+}
+
+func eachMapP(fn, m reflect.Value) {
+	var done sync.WaitGroup
+	for _, k := range m.MapKeys() {
+		v := m.MapIndex(k)
+		done.Add(1)
+		go func() {
+			eachCall(fn, v, k)
+			done.Done()
+		}()
+	}
+	done.Wait()
 }
 
 // Reference Each Implementation
@@ -100,6 +133,7 @@ func refEach(slice []string, fn func(string)) {
 // Reference Parallel Each Implementation
 func refPEach(slice []string, fn func(string)) {
 	var done sync.WaitGroup
+
 	for _, s := range slice {
 		s := s
 		done.Add(1)

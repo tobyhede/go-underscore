@@ -97,6 +97,29 @@ func TestEachInt(t *testing.T) {
 	equals(t, expect, receive)
 }
 
+func TestEachP(t *testing.T) {
+	var buffer bytes.Buffer
+
+	ch := make(chan string)
+
+	fn := func(s string) {
+		ch <- s
+	}
+
+	go func() {
+		EachP(SLICE_STRING, fn)
+		close(ch)
+	}()
+
+	for s := range ch {
+		buffer.WriteString(s)
+	}
+
+	expect := "abcdefghijklmnopqrstuvwxyz"
+
+	equals(t, expect, buffer.String())
+}
+
 func TestRefEach(t *testing.T) {
 	var buffer bytes.Buffer
 
