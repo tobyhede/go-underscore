@@ -23,18 +23,29 @@ This package is in heavy flux at the moment as I work to incorporate feedback fr
 
 * refactor to make functions first parameter (eg Each func(func(A), []A))
 * godoc
-* none
-* all
-* any
 * contains
 * indexOf
 * pMap (parallel)
 * handle maps
+* ~~none~~
+* ~~all~~
+* ~~any~~
+
+
+------------------------------------------
+* (Any)[#any]
+* (Each)[#each]
+* (Every)[#every]
+* (Map)[#map]
+* (None)[#none]
 
 
 
+### <a name="any"></a>Any ###
+---------------------------------------------------------------------------
 
-### Each ###
+
+### <a name="each"></a>Each ###
 ---------------------------------------------------------------------------
 
 Each func(func(A int), []A)
@@ -101,6 +112,12 @@ Using a Typed Map
 ```
 
 Of note is the ability to close over variables within the calling scope.
+
+
+### <a name="every"></a>Every ###
+---------------------------------------------------------------------------
+
+
 
 
 ### Map ###

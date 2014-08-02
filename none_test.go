@@ -6,7 +6,6 @@ import (
 )
 
 func init() {
-	// suite("None")
 }
 
 func TestNoneSlice(t *testing.T) {
