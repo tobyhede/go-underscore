@@ -98,6 +98,7 @@ func eachP(values []reflect.Value) []reflect.Value {
 }
 
 func eachSliceP(fn, s reflect.Value) {
+
 	var done sync.WaitGroup
 	for i := 0; i < s.Len(); i++ {
 		v := s.Index(i)
@@ -111,14 +112,15 @@ func eachSliceP(fn, s reflect.Value) {
 }
 
 func eachMapP(fn, m reflect.Value) {
+
 	var done sync.WaitGroup
 	for _, k := range m.MapKeys() {
 		v := m.MapIndex(k)
 		done.Add(1)
-		go func() {
+		go func(fn, v, k reflect.Value) {
 			eachCall(fn, v, k)
 			done.Done()
-		}()
+		}(fn, v, k)
 	}
 	done.Wait()
 }

@@ -18,7 +18,7 @@ func TestPartition(t *testing.T) {
 	}
 
 	if expect, receive := 2, even[0]; expect != receive {
-		t.Errorf("[TestPartition] Expected %v; Received %v", expect)
+		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
 	}
 }
 
@@ -36,7 +36,7 @@ func TestPartitionInt(t *testing.T) {
 	}
 
 	if expect, receive := 2, even[0]; expect != receive {
-		t.Errorf("[TestPartitionInt] Expected %v; Received %v", expect)
+		t.Errorf("[TestPartitionInt] Expected %v; Received %v", expect, receive)
 	}
 
 }

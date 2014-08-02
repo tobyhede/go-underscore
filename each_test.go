@@ -107,7 +107,7 @@ func TestEachP(t *testing.T) {
 	}
 
 	go func() {
-		EachP(SLICE_STRING, fn)
+		EachP(fn, SLICE_STRING)
 		close(ch)
 	}()
 
@@ -118,6 +118,30 @@ func TestEachP(t *testing.T) {
 	expect := "abcdefghijklmnopqrstuvwxyz"
 
 	equals(t, expect, buffer.String())
+}
+
+func TestEachPMap(t *testing.T) {
+	var buffer bytes.Buffer
+
+	ch := make(chan int)
+
+	fn := func(i int) {
+		ch <- i
+	}
+
+	go func() {
+		EachP(fn, MAP_STRING_TO_INT)
+		close(ch)
+	}()
+
+	for i := range ch {
+		buffer.WriteString(strconv.Itoa(i))
+	}
+
+	// expect := "abcdefghijklmnopqrstuvwxyz"
+	expect := "1234567891011121314151617181920212223242526"
+	receive := buffer.String()
+	equals(t, len(expect), len(receive))
 }
 
 func TestRefEach(t *testing.T) {
