@@ -21,7 +21,9 @@ func init() {
 // var Each func(func(value, i interface{}), interface{})
 var Each func(fn interface{}, slice_or_map interface{})
 
-// var EachI func(func(value, i interface{}), interface{})
+// EachP Parallel Each
+// *Concurrently* applies the given iterator function to each element of a collection (slice or map).
+var EachP func(fn interface{}, slice_or_map interface{})
 
 // EachInt
 // Applies the given iterator function to each element of []int
@@ -32,8 +34,6 @@ var EachInt func(func(value, i int), []int)
 // Applies the given iterator function to each element of map[string]int
 // Iterator function arguments are *value, key*
 var EachStringInt func(func(value int, key string), map[string]int)
-
-var EachP func(interface{}, interface{})
 
 // MakeEach implements a typed Each function in the form Each func(func(A, B), []A)
 func MakeEach(fn interface{}) {

@@ -33,12 +33,16 @@ This package is in heavy flux at the moment as I work to incorporate feedback fr
 
 
 ------------------------------------------
+* [Notes on Typed Functions](#typed)
 * [Any](#any)
 * [Each](#each)
 * [Every](#every)
 * [Map](#map)
 * [None](#none)
 
+
+### <a name="typed"></a>Typed Functions ###
+---------------------------------------------------------------------------
 
 
 ### <a name="any"></a>Any ###
@@ -51,11 +55,15 @@ This package is in heavy flux at the moment as I work to incorporate feedback fr
 Each func(func(A int), []A)
 Each func(func(A B), []A)
 
+
 Applies the given iterator function to each element of a collection (slice or map).
 
 If the collection is a Slice, the iterator function arguments are *value, index*
 
 If the collection is a Map, the iterator function arguments are *value, key*
+
+EachP is a Parallel implementation of Each and *concurrently* applies the given iterator function to each element of a collection (slice or map).
+
 
 ``` go
   // var Each func(func(value interface{}, i interface{}), interface{})
