@@ -33,11 +33,11 @@ This package is in heavy flux at the moment as I work to incorporate feedback fr
 
 
 ------------------------------------------
-* (Any)[#any]
-* (Each)[#each]
-* (Every)[#every]
-* (Map)[#map]
-* (None)[#none]
+* [Any](#any)
+* [Each](#each)
+* [Every](#every)
+* [Map](#map)
+* [None](#none)
 
 
 
