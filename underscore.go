@@ -43,3 +43,8 @@ func interfaceToValue(v reflect.Value) reflect.Value {
 	}
 	return v
 }
+
+func predicate(fn, v reflect.Value) bool {
+	res := fn.Call(Valueize(v))
+	return res[0].Bool()
+}

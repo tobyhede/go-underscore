@@ -5,64 +5,64 @@ import (
 )
 
 func init() {
-	MakeEvery(&Every)
-	MakeEvery(&EveryInt)
-	MakeEvery(&EveryString)
+	MakeAny(&Any)
+	MakeAny(&AnyInt)
+	MakeAny(&AnyString)
 }
 
-// Every func(func(A, bool), bool)
+// Any func(func(A, bool), bool)
 // Returns true if all values in the collection (slice or map) pass the predicate truth test
 
-// var Every func(func(value interface{}) bool, interface{}) bool
-var Every func(fn, slice_or_map interface{}) bool
+// var Any func(func(value interface{}) bool, interface{}) bool
+var Any func(fn, slice_or_map interface{}) bool
 
-// EveryInt
+// AnyInt
 // Returns true if all values in a []int pass the predicate truth test
 // Predicate function accepts an int and returns a boolean
-var EveryInt func(func(value int) bool, []int) bool
+var AnyInt func(func(value int) bool, []int) bool
 
-// EveryString
+// AnyString
 // Returns true if all values in a []string pass the predicate truth test
 // Predicate function accepts a string and returns a boolean
-var EveryString func(func(value string) bool, []string) bool
+var AnyString func(func(value string) bool, []string) bool
 
 // MakeEach implements a typed Each function in the form Each func(func(A, B), []A)
-func MakeEvery(fn interface{}) {
-	Maker(fn, every)
+func MakeAny(fn interface{}) {
+	Maker(fn, any)
 }
 
-func every(values []reflect.Value) []reflect.Value {
+func any(values []reflect.Value) []reflect.Value {
 	fn := interfaceToValue(values[0])
 	list := interfaceToValue(values[1])
 
 	var ret bool
 	if list.Kind() == reflect.Map {
-		ret = everyMap(fn, list)
+		ret = anyMap(fn, list)
 	}
 
 	if list.Kind() == reflect.Slice {
-		ret = everySlice(fn, list)
+		ret = anySlice(fn, list)
 	}
 
 	return Valueize(reflect.ValueOf(ret))
 }
 
-func everySlice(fn, s reflect.Value) bool {
+func anySlice(fn, s reflect.Value) bool {
 	for i := 0; i < s.Len(); i++ {
 		v := s.Index(i)
-		if ok := predicate(fn, v); !ok {
-			return false
+		if ok := predicate(fn, v); ok {
+			return true
 		}
 	}
-	return true
+	return false
 }
 
-func everyMap(fn, m reflect.Value) bool {
+func anyMap(fn, m reflect.Value) bool {
 	for _, k := range m.MapKeys() {
 		v := m.MapIndex(k)
-		if ok := predicate(fn, v); !ok {
-			return false
+		if ok := predicate(fn, v); ok {
+			return true
 		}
 	}
-	return true
+	return false
 }
