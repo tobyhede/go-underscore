@@ -17,6 +17,7 @@ func init() {
 // Applies the given iterator function to each element of a collection (slice or map).
 // If the collection is a Slice, the iterator function arguments are *value, index*
 // If the collection is a Map, the iterator function arguments are *value, key*
+// Iterator functions accept a value, and the index or key is an optional argument.
 // Note: each does not return a value, you may want un.Map
 // var Each func(func(value, i interface{}), interface{})
 var Each func(fn interface{}, slice_or_map interface{})
@@ -40,6 +41,7 @@ func MakeEach(fn interface{}) {
 	Maker(fn, each)
 }
 
+// MakeEachP implements a typed Parellel-Each function in the form EachP func(func(A, B), []A)
 func MakeEachP(fn interface{}) {
 	Maker(fn, eachP)
 }
@@ -98,7 +100,6 @@ func eachP(values []reflect.Value) []reflect.Value {
 }
 
 func eachSliceP(fn, s reflect.Value) {
-
 	var done sync.WaitGroup
 	for i := 0; i < s.Len(); i++ {
 		v := s.Index(i)
@@ -112,7 +113,6 @@ func eachSliceP(fn, s reflect.Value) {
 }
 
 func eachMapP(fn, m reflect.Value) {
-
 	var done sync.WaitGroup
 	for _, k := range m.MapKeys() {
 		v := m.MapIndex(k)

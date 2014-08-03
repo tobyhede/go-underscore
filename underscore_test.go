@@ -63,9 +63,11 @@ func title(i interface{}) {
 
 func TestValueize(t *testing.T) {
 	i := reflect.ValueOf(42)
-	s := reflect.ValueOf("42")
+	s := "42"
+
 	res := Valueize(i, s)
-	equals(t, res, []reflect.Value{i, s})
+	equals(t, i, res[0])
+	equals(t, s, res[1].Interface())
 }
 
 func TestToI(t *testing.T) {
@@ -78,4 +80,22 @@ func TestToI(t *testing.T) {
 	if expected, received := SLICE_STRING[0], i[0]; expected != received {
 		t.Errorf("[ToI] Expected %v; Received %v", expected, received)
 	}
+}
+
+func TestPredicateArity(t *testing.T) {
+	oneArity := func(s int) bool {
+		return s == 99
+	}
+
+	twoArity := func(s, i int) bool {
+		return s == 99 && i == 99
+	}
+
+	v := reflect.ValueOf(99)
+	res := predicate(reflect.ValueOf(oneArity), v)
+
+	equals(t, true, res)
+
+	res = predicate(reflect.ValueOf(twoArity), v, v)
+	equals(t, true, res)
 }

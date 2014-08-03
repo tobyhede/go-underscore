@@ -1,42 +1,44 @@
 package un
 
-import (
-	"testing"
-)
+import "testing"
 
-func TestPartition(t *testing.T) {
-	slice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
-
-	fn := func(i interface{}) bool {
-		return (i.(int) % 2) == 1
-	}
-
-	odd, even := Partition(slice, fn)
-
-	if expect, receive := 1, odd[0]; expect != receive {
-		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
-	}
-
-	if expect, receive := 2, even[0]; expect != receive {
-		t.Errorf("[TestPartition] Expected %v; Received %v", expect, receive)
-	}
+func init() {
 }
 
-func TestPartitionInt(t *testing.T) {
-	slice := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
+func TestPartitionWithSliceInterface(t *testing.T) {
 
-	fn := func(i int) bool {
-		return (i % 2) == 1
+	fn := func(s interface{}) bool {
+		return true
 	}
 
-	odd, even := PartitionInt(slice, fn)
+	receive, _ := Partition(fn, SLICE_STRING)
+	// display(fn)
+	display(receive)
+	// i := 99
+	// v := reflect.ValueOf(i)
+	// vp := v.Convert(reflect.Value)
+	// display(v.Type().Implements(reflect.Value))
 
-	if expect, receive := 1, odd[0]; expect != receive {
-		t.Errorf("[TestPartitionInt] Expected %v; Received %v", expect, receive)
-	}
+	// if v, ok := v.(reflect.Value); ok {
+	// display("hello")
+	// }
 
-	if expect, receive := 2, even[0]; expect != receive {
-		t.Errorf("[TestPartitionInt] Expected %v; Received %v", expect, receive)
-	}
-
+	// expect := SLICE_STRING
+	// equals(t, expect, receive)
 }
+
+// func TestPartitionWithMap(t *testing.T) {
+// 	var buffer bytes.Buffer
+
+// 	fn := func(v, k interface{}) {
+// 		buffer.WriteString(k.(string))
+// 		buffer.WriteString(strconv.Itoa(v.(int)))
+// 	}
+
+// 	Partition(fn, MAP_STRING_TO_INT)
+
+// 	expect := "abcdefghijklmnopqrstuvwxyz1234567891011121314151617181920212223242526"
+// 	receive := buffer.String()
+
+// 	equals(t, len(expect), len(receive))
+// }

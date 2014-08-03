@@ -31,8 +31,19 @@ func ToI(slice interface{}) []interface{} {
 }
 
 // Valueize takes a number of arguments and returns them as []reflect.Value
-func Valueize(values ...reflect.Value) []reflect.Value {
-	return values
+func Valueize(values ...interface{}) []reflect.Value {
+	ret := make([]reflect.Value, len(values))
+
+	for i := 0; i < len(values); i++ {
+		v := values[i]
+		if t := reflect.TypeOf(v).String(); t == "reflect.Value" {
+			ret[i] = v.(reflect.Value)
+		} else {
+			ret[i] = reflect.ValueOf(v)
+		}
+	}
+
+	return ret
 }
 
 // InterfaceToValue converts a value of interface{} to a value of Interface()
@@ -44,7 +55,7 @@ func interfaceToValue(v reflect.Value) reflect.Value {
 	return v
 }
 
-func predicate(fn, v reflect.Value) bool {
-	res := fn.Call(Valueize(v))
+func predicate(fn reflect.Value, args ...reflect.Value) bool {
+	res := fn.Call(args)
 	return res[0].Bool()
 }
