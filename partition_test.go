@@ -12,19 +12,9 @@ func TestPartitionWithSliceInterface(t *testing.T) {
 	}
 
 	receive, _ := Partition(fn, SLICE_STRING)
-	// display(fn)
-	display(receive)
-	// i := 99
-	// v := reflect.ValueOf(i)
-	// vp := v.Convert(reflect.Value)
-	// display(v.Type().Implements(reflect.Value))
 
-	// if v, ok := v.(reflect.Value); ok {
-	// display("hello")
-	// }
-
-	// expect := SLICE_STRING
-	// equals(t, expect, receive)
+	expect := SLICE_STRING
+	equals(t, ToI(expect), receive)
 }
 
 // func TestPartitionWithMap(t *testing.T) {

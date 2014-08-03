@@ -40,7 +40,11 @@ func MakePartition(fn interface{}) {
 	Maker(fn, partition)
 }
 
-type p struct {
+type partitioner struct {
+	fn  reflect.Value
+	col reflect.Value
+	t   reflect.Value
+	f   reflect.Value
 }
 
 func partition(values []reflect.Value) []reflect.Value {
@@ -49,59 +53,48 @@ func partition(values []reflect.Value) []reflect.Value {
 	col := interfaceToValue(values[1])
 	kind := values[1].Kind()
 
+	p := newPartitioner(fn, col, kind)
+	p.partition()
+
+	return Valueize(p.t, p.f)
+}
+
+func newPartitioner(fn, col reflect.Value, kind reflect.Kind) *partitioner {
 	t, f := makePartitions(col, kind)
-	// display(t)
-	// display(f)
-	display(kind)
-	// display(fn)
-	// if col.Kind() == reflect.Map {
-	// 	partitionMap(fn, col)
-	// }
-
-	if col.Kind() == reflect.Slice {
-		partitionSlice(fn, col)
-	}
-
-	return Valueize(t, f)
+	return &partitioner{fn: fn, col: col, t: t, f: f}
 }
 
-func partitionSlice(fn, s reflect.Value) {
-	for i := 0; i < s.Len(); i++ {
-		v := s.Index(i)
-		partitionCall(fn, v, reflect.ValueOf(i))
-	}
-
-	// for i := 0; i < slice.Len(); i++ {
-	// 	e := slice.Index(i)
-	// 	// r := fn.Call([]reflect.Value{e})
-	// 	if r[0].Bool() {
-	// 		t = reflect.Append(t, e)
-	// 	} else {
-	// 		f = reflect.Append(f, e)
-	// 	}
-	// }
-
-}
-
-func partitionMap(fn, m reflect.Value) {
-	for _, k := range m.MapKeys() {
-		v := m.MapIndex(k)
-		partitionCall(fn, v, k)
+func (p *partitioner) partition() {
+	if p.isSlice() {
+		p.partitionSlice()
 	}
 }
 
-func partitionCall(fn, v, i reflect.Value) bool {
-	// args := Valueize(v)
-	// if in := fn.Type().NumIn(); in == 2 {
-	// 	args = append(args, i)
-	// }
-	// fn.Call(args)
-	// v := s.Index(i)
-	// if ok := predicate(fn, v); !ok {
-	// 	return false
-	// }
-	return false
+func (p *partitioner) isSlice() bool {
+	return p.col.Kind() == reflect.Slice
 }
+
+func (p *partitioner) isMap() bool {
+	return p.col.Kind() == reflect.Map
+}
+
+func (p *partitioner) partitionSlice() {
+	for i := 0; i < p.col.Len(); i++ {
+		v := p.col.Index(i)
+		if ok := predicate(p.fn, v, reflect.ValueOf(i)); ok {
+			p.t = reflect.Append(p.t, v)
+		} else {
+			p.f = reflect.Append(p.f, v)
+		}
+	}
+}
+
+// func partitionMap(fn, m reflect.Value) {
+// 	for _, k := range m.MapKeys() {
+// 		v := m.MapIndex(k)
+// 		partitionCall(fn, v, k)
+// 	}
+// }
 
 func makePartitions(col reflect.Value, kind reflect.Kind) (reflect.Value, reflect.Value) {
 	var t, f reflect.Value
