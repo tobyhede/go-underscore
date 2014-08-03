@@ -50,7 +50,7 @@ func every(values []reflect.Value) []reflect.Value {
 func everySlice(fn, s reflect.Value) bool {
 	for i := 0; i < s.Len(); i++ {
 		v := s.Index(i)
-		if ok := predicate(fn, v); !ok {
+		if ok := predicate(fn, v, reflect.ValueOf(i)); !ok {
 			return false
 		}
 	}

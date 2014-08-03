@@ -76,7 +76,7 @@ func eachMap(fn, m reflect.Value) {
 }
 
 func eachCall(fn, v, i reflect.Value) {
-	args := Valueize(v)
+	args := []reflect.Value{v}
 	if in := fn.Type().NumIn(); in == 2 {
 		args = append(args, i)
 	}

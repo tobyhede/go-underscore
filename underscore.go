@@ -56,6 +56,8 @@ func interfaceToValue(v reflect.Value) reflect.Value {
 }
 
 func predicate(fn reflect.Value, args ...reflect.Value) bool {
-	res := fn.Call(args)
+	in := fn.Type().NumIn()
+	res := fn.Call(args[0:in])
 	return res[0].Bool()
+
 }

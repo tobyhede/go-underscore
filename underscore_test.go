@@ -96,6 +96,13 @@ func TestPredicateArity(t *testing.T) {
 
 	equals(t, true, res)
 
+	res = predicate(reflect.ValueOf(oneArity), v, v)
+	equals(t, true, res)
+
 	res = predicate(reflect.ValueOf(twoArity), v, v)
+	equals(t, true, res)
+
+	values := []reflect.Value{v, v}
+	res = predicate(reflect.ValueOf(twoArity), values...)
 	equals(t, true, res)
 }

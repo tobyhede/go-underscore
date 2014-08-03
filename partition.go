@@ -40,6 +40,9 @@ func MakePartition(fn interface{}) {
 	Maker(fn, partition)
 }
 
+type p struct {
+}
+
 func partition(values []reflect.Value) []reflect.Value {
 
 	fn := interfaceToValue(values[0])
@@ -63,14 +66,10 @@ func partition(values []reflect.Value) []reflect.Value {
 }
 
 func partitionSlice(fn, s reflect.Value) {
-	// for i := 0; i < s.Len(); i++ {
-	// 	v := s.Index(i)
-	// 	partitionCall(fn, v, reflect.ValueOf(i))
-	// }
-
-	// if ok := predicate(fn, v); !ok {
-	// 	return false
-	// }
+	for i := 0; i < s.Len(); i++ {
+		v := s.Index(i)
+		partitionCall(fn, v, reflect.ValueOf(i))
+	}
 
 	// for i := 0; i < slice.Len(); i++ {
 	// 	e := slice.Index(i)
@@ -91,12 +90,17 @@ func partitionMap(fn, m reflect.Value) {
 	}
 }
 
-func partitionCall(fn, v, i reflect.Value) {
-	args := Valueize(v)
-	if in := fn.Type().NumIn(); in == 2 {
-		args = append(args, i)
-	}
-	fn.Call(args)
+func partitionCall(fn, v, i reflect.Value) bool {
+	// args := Valueize(v)
+	// if in := fn.Type().NumIn(); in == 2 {
+	// 	args = append(args, i)
+	// }
+	// fn.Call(args)
+	// v := s.Index(i)
+	// if ok := predicate(fn, v); !ok {
+	// 	return false
+	// }
+	return false
 }
 
 func makePartitions(col reflect.Value, kind reflect.Kind) (reflect.Value, reflect.Value) {
