@@ -64,7 +64,11 @@ func newPartitioner(fn, col reflect.Value, kind reflect.Kind) *partitioner {
 }
 
 func (p *partitioner) partition() []reflect.Value {
-	if p.isSlice() {
+
+	switch {
+	case p.isSlice():
+		p.partitionSlice()
+	case p.isMap():
 		p.partitionSlice()
 	}
 	return []reflect.Value{p.t, p.f}
@@ -80,20 +84,26 @@ func (p *partitioner) isMap() bool {
 
 func (p *partitioner) partitionSlice() {
 	for i := 0; i < p.col.Len(); i++ {
-		v := p.col.Index(i)
-		if ok := predicate(p.fn, v, reflect.ValueOf(i)); ok {
-			p.t = reflect.Append(p.t, v)
-		} else {
-			p.f = reflect.Append(p.f, v)
-		}
+		val := p.col.Index(i)
+		idx := reflect.ValueOf(i)
+		p.partitionate(val, idx)
 	}
 }
 
-// 	for _, k := range m.MapKeys() {
-// 		v := m.MapIndex(k)
-// 		partitionCall(fn, v, k)
-// 	}
-// }
+func (p *partitioner) partitionMap() {
+	for _, key := range p.col.MapKeys() {
+		val := p.col.MapIndex(key)
+		p.partitionate(val, key)
+	}
+}
+
+func (p *partitioner) partitionate(val, idx_or_key reflect.Value) {
+	if ok := predicate(p.fn, val, idx_or_key); ok {
+		p.t = reflect.Append(p.t, val)
+	} else {
+		p.f = reflect.Append(p.f, val)
+	}
+}
 
 func makePartitions(col reflect.Value, kind reflect.Kind) (reflect.Value, reflect.Value) {
 	var t, f reflect.Value
