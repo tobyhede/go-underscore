@@ -54,9 +54,8 @@ func partition(values []reflect.Value) []reflect.Value {
 	kind := values[1].Kind()
 
 	p := newPartitioner(fn, col, kind)
-	p.partition()
 
-	return Valueize(p.t, p.f)
+	return p.partition()
 }
 
 func newPartitioner(fn, col reflect.Value, kind reflect.Kind) *partitioner {
@@ -64,10 +63,11 @@ func newPartitioner(fn, col reflect.Value, kind reflect.Kind) *partitioner {
 	return &partitioner{fn: fn, col: col, t: t, f: f}
 }
 
-func (p *partitioner) partition() {
+func (p *partitioner) partition() []reflect.Value {
 	if p.isSlice() {
 		p.partitionSlice()
 	}
+	return []reflect.Value{p.t, p.f}
 }
 
 func (p *partitioner) isSlice() bool {
@@ -89,7 +89,6 @@ func (p *partitioner) partitionSlice() {
 	}
 }
 
-// func partitionMap(fn, m reflect.Value) {
 // 	for _, k := range m.MapKeys() {
 // 		v := m.MapIndex(k)
 // 		partitionCall(fn, v, k)
