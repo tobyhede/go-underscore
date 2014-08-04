@@ -59,5 +59,4 @@ func predicate(fn reflect.Value, args ...reflect.Value) bool {
 	in := fn.Type().NumIn()
 	res := fn.Call(args[0:in])
 	return res[0].Bool()
-
 }

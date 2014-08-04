@@ -4,7 +4,7 @@ import "reflect"
 
 func init() {
 	MakePartition(&Partition)
-	// MakePartition(&PartitionInt)
+	MakePartition(&PartitionInt)
 	// MakePartition(&PartitionString)
 	// MakePartition(&PartitionStringInt)
 	// MakePartitionP(&PartitionP)
@@ -28,7 +28,7 @@ var Partition func(fn interface{}, slice_or_map interface{}) ([]interface{}, []i
 // // PartitionInt
 // // Applies the given iterator function to partition element of []int
 // // Iterator function arguments are *value, index*
-// var PartitionInt func(func(value, i int), []int)
+var PartitionInt func(func(value, i int), []int) ([]int, []int)
 
 // // PartitionStringInt
 // // Applies the given iterator function to partition element of map[string]int
@@ -69,7 +69,7 @@ func (p *partitioner) partition() []reflect.Value {
 	case p.isSlice():
 		p.partitionSlice()
 	case p.isMap():
-		p.partitionSlice()
+		p.partitionMap()
 	}
 	return []reflect.Value{p.t, p.f}
 }

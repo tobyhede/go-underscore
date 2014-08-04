@@ -17,18 +17,31 @@ func TestPartitionWithSliceInterface(t *testing.T) {
 	equals(t, ToI(expect), receive)
 }
 
-// func TestPartitionWithMap(t *testing.T) {
-// 	var buffer bytes.Buffer
+func TestPartitionWithMapInterface(t *testing.T) {
 
-// 	fn := func(v, k interface{}) {
-// 		buffer.WriteString(k.(string))
-// 		buffer.WriteString(strconv.Itoa(v.(int)))
-// 	}
+	fn := func(s interface{}) bool {
+		return true
+	}
 
-// 	Partition(fn, MAP_STRING_TO_INT)
+	receive, _ := Partition(fn, MAP_STRING_TO_INT)
 
-// 	expect := "abcdefghijklmnopqrstuvwxyz1234567891011121314151617181920212223242526"
-// 	receive := buffer.String()
+	expect := MAP_STRING_TO_INT
+	equals(t, len(expect), len(receive))
 
-// 	equals(t, len(expect), len(receive))
-// }
+	display(receive)
+}
+
+func TestPartitionWithSliceInt(t *testing.T) {
+
+	fn := func(i int) bool {
+		return i < 5
+	}
+
+	under, over := Partition(fn, SLICE_INT)
+
+	equals(t, 5, len(under))
+	equals(t, 5, len(over))
+
+	equals(t, 0, under[0])
+	equals(t, 5, over[0])
+}
