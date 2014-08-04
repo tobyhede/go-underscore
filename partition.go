@@ -10,7 +10,7 @@ func init() {
 	// MakePartitionP(&PartitionP)
 }
 
-// Partition func(func(A, B), []A)
+// Partition func(func(A, B) bool, []A []A)
 // Applies the given iterator function to partition element of a collection (slice or map).
 // If the collection is a Slice, the iterator function arguments are *value, index*
 // If the collection is a Map, the iterator function arguments are *value, key*
