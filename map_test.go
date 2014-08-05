@@ -14,17 +14,16 @@ func TestMapWithSliceInterface(t *testing.T) {
 	equals(t, expect, receive[0])
 }
 
-// func TestMapString(t *testing.T) {
-// 	fn := func(s string) string {
-// 		return s + "!"
-// 	}
+func TestMapString(t *testing.T) {
+	fn := func(s string) string {
+		return s + "!"
+	}
 
-// 	m := MapString(SLICE_STRING, fn)
+	receive := MapString(fn, SLICE_STRING)
 
-// 	if expect := m[0]; expect != "a!" {
-// 		t.Errorf("[TestMapString] Expected %v;", expect)
-// 	}
-// }
+	expect := "a!"
+	equals(t, expect, receive[0])
+}
 
 // func TestMapInt(t *testing.T) {
 // 	fn := func(i int) int {

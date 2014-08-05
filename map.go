@@ -28,10 +28,10 @@ var MapString func(func(string) string, []string) []string
 // var MapStringToBool func([]string, func(string) bool) []bool
 
 func MakeMap(fn interface{}) {
-	Maker(fn, _map)
+	Maker(fn, mapImpl)
 }
 
-func _map(values []reflect.Value) []reflect.Value {
+func mapImpl(values []reflect.Value) []reflect.Value {
 
 	fn := interfaceToValue(values[0])
 	col := interfaceToValue(values[1])
