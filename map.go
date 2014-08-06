@@ -41,13 +41,28 @@ func mapImpl(values []reflect.Value) []reflect.Value {
 	retType := reflect.SliceOf(fn.Type().Out(0))
 	ret = reflect.MakeSlice(retType, col.Len(), col.Len())
 
+	// if list.Kind() == reflect.Map {
+	// 	ret = everyMap(fn, list)
+	// }
+
+	if col.Kind() == reflect.Slice {
+		ret = mapSlice(fn, col)
+	}
+
+	return []reflect.Value{ret}
+}
+
+func mapSlice(fn, col reflect.Value) reflect.Value {
+
+	retType := reflect.SliceOf(fn.Type().Out(0))
+	ret := reflect.MakeSlice(retType, col.Len(), col.Len())
+
 	for i := 0; i < col.Len(); i++ {
 		e := col.Index(i)
 		r := fn.Call([]reflect.Value{e})
 		ret.Index(i).Set(r[0])
 	}
-
-	return []reflect.Value{ret}
+	return ret
 }
 
 /**
