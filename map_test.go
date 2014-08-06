@@ -37,6 +37,17 @@ func TestMapString(t *testing.T) {
 // 	}
 // }
 
+func TestMapInt(t *testing.T) {
+	fn := func(i int) int {
+		return i + 1
+	}
+
+	receive := MapInt(fn, SLICE_INT)
+
+	expect := 1
+	equals(t, expect, receive[0])
+}
+
 // func TestMapMapStringToBool(t *testing.T) {
 // 	b := MapStringToBool(SLICE_STRING, func(s string) bool {
 // 		return s == "z"

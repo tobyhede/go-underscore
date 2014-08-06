@@ -7,7 +7,7 @@ import (
 func init() {
 	MakeMap(&Map)
 	MakeMap(&MapString)
-	// MakeMap(&MapInt)
+	MakeMap(&MapInt)
 	// MakeMap(&MapStringToBool)
 }
 
@@ -23,7 +23,7 @@ var Map func(interface{}, interface{}) []interface{}
 
 var MapString func(func(string) string, []string) []string
 
-// var MapInt func([]int, func(int) int) []int
+var MapInt func(func(int) int, []int) []int
 
 // var MapStringToBool func([]string, func(string) bool) []bool
 
