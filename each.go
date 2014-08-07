@@ -114,9 +114,11 @@ func eachSliceP(fn, s reflect.Value) {
 
 func eachMapP(fn, m reflect.Value) {
 	var done sync.WaitGroup
-	for _, k := range m.MapKeys() {
+	keys := m.MapKeys()
+	done.Add(len(keys))
+
+	for _, k := range keys {
 		v := m.MapIndex(k)
-		done.Add(1)
 		go func(fn, v, k reflect.Value) {
 			eachCall(fn, v, k)
 			done.Done()

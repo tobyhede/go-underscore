@@ -1,8 +1,6 @@
 package un
 
-import (
-	"reflect"
-)
+import "reflect"
 
 func init() {
 	MakeMap(&Map)
@@ -68,17 +66,39 @@ func mapSlice(fn, col reflect.Value) reflect.Value {
 /**
 	Reference Map impementations
 **/
-func RefSliceMap(slice []string, fn func(string) string) []string {
-	ret := make([]string, len(slice), len(slice))
+func refPSliceMap(fn func(string) string, slice []string) []string {
+	// ret := make([]string, len(slice), len(slice))
+	// var done sync.WaitGroup
+	ret := []string{}
 
-	for i := 0; i < len(slice); i++ {
-		ret[i] = fn(slice[i])
+	ch := make(chan string)
+
+	// done.Add(len(slice))
+	go func() {
+		for i := 0; i < len(slice); i++ {
+			go func(s string) {
+				ch <- fn(s)
+				// done.Done()
+			}(slice[i])
+			<-ch
+		}
+	}()
+	display("start")
+
+	for s := range ch {
+		display(s)
+		ret = append(ret, s)
 	}
+
+	display("return")
+	// done.Wait()
+	display("blah")
+	close(ch)
 
 	return ret
 }
 
-func RefMapMap(m map[string]int, fn func(string, int) string) []string {
+func refMapMap(m map[string]int, fn func(string, int) string) []string {
 	ret := make([]string, 0, len(m))
 
 	for k, v := range m {
@@ -86,3 +106,18 @@ func RefMapMap(m map[string]int, fn func(string, int) string) []string {
 	}
 	return ret
 }
+
+// func refPEach(slice []string, fn func(string)) {
+// 	var done sync.WaitGroup
+
+// 	for _, s := range slice {
+// 		s := s
+// 		done.Add(1)
+// 		go func() {
+// 			fn(s)
+// 			done.Done()
+// 		}()
+// 	}
+
+// 	done.Wait()
+// }
