@@ -41,6 +41,7 @@ func TestRefPSliceMap(t *testing.T) {
 		return s + "!"
 	}
 
+	display(make([]struct{}, 10))
 	receive := refPSliceMap(fn, SLICE_STRING)
 
 	// expect := "a!"

@@ -1,6 +1,9 @@
 package un
 
-import "reflect"
+import (
+	"reflect"
+	"sync"
+)
 
 func init() {
 	MakeMap(&Map)
@@ -68,32 +71,47 @@ func mapSlice(fn, col reflect.Value) reflect.Value {
 **/
 func refPSliceMap(fn func(string) string, slice []string) []string {
 	// ret := make([]string, len(slice), len(slice))
-	// var done sync.WaitGroup
+	var done sync.WaitGroup
 	ret := []string{}
 
 	ch := make(chan string)
+	sem := make(chan struct{})
 
-	// done.Add(len(slice))
-	go func() {
-		for i := 0; i < len(slice); i++ {
-			go func(s string) {
-				ch <- fn(s)
-				// done.Done()
-			}(slice[i])
-			<-ch
-		}
-	}()
-	display("start")
-
-	for s := range ch {
-		display(s)
-		ret = append(ret, s)
+	done.Add(len(slice))
+	for i := 0; i < len(slice); i++ {
+		go func(s string) {
+			ch <- fn(s)
+			done.Done()
+		}(slice[i])
 	}
 
-	display("return")
-	// done.Wait()
-	display("blah")
+	// sem <- struct{}
+
+	display("start")
+
+	go func() {
+		select {
+		case s := <-ch:
+			display(s)
+			ret = append(ret, s)
+		case <-sem:
+			display("sem")
+			close(ch)
+			close(sem)
+		}
+	}()
+
+	done.Wait()
 	close(ch)
+	close(sem)
+
+	// for s := range ch {
+	// 	display(s)
+	// 	ret = append(ret, s)
+	// }
+
+	display("return")
+	display("blah")
 
 	return ret
 }
