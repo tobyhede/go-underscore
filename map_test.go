@@ -1,6 +1,7 @@
 package un
 
 import (
+	"runtime"
 	"testing"
 )
 
@@ -37,6 +38,7 @@ func TestMapInt(t *testing.T) {
 }
 
 func TestRefPSliceMap(t *testing.T) {
+	runtime.GOMAXPROCS(runtime.NumCPU())
 	fn := func(s string) string {
 		return s + "!"
 	}

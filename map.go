@@ -1,8 +1,9 @@
 package un
 
 import (
+	"fmt"
 	"reflect"
-	"sync"
+	"time"
 )
 
 func init() {
@@ -66,54 +67,43 @@ func mapSlice(fn, col reflect.Value) reflect.Value {
 	return ret
 }
 
+func worker(id int, jobs <-chan int, results chan<- int) {
+	for j := range jobs {
+		fmt.Println("worker", id, "processing job", j)
+		time.Sleep(time.Second)
+		results <- j * 2
+	}
+}
+
 /**
 	Reference Map impementations
 **/
 func refPSliceMap(fn func(string) string, slice []string) []string {
-	// ret := make([]string, len(slice), len(slice))
-	var done sync.WaitGroup
-	ret := []string{}
+	// In order to use our pool of workers we need to send
+	// them work and collect their results. We make 2
+	// channels for this.
+	jobs := make(chan int, 100)
+	results := make(chan int, 100)
 
-	ch := make(chan string)
-	sem := make(chan struct{})
-
-	done.Add(len(slice))
-	for i := 0; i < len(slice); i++ {
-		go func(s string) {
-			ch <- fn(s)
-			done.Done()
-		}(slice[i])
+	// This starts up 3 workers, initially blocked
+	// because there are no jobs yet.
+	for w := 1; w <= 3; w++ {
+		go worker(w, jobs, results)
 	}
 
-	// sem <- struct{}
+	// Here we send 9 `jobs` and then `close` that
+	// channel to indicate that's all the work we have.
+	for j := 1; j <= 9; j++ {
+		jobs <- j
+	}
+	close(jobs)
 
-	display("start")
-
-	go func() {
-		select {
-		case s := <-ch:
-			display(s)
-			ret = append(ret, s)
-		case <-sem:
-			display("sem")
-			close(ch)
-			close(sem)
-		}
-	}()
-
-	done.Wait()
-	close(ch)
-	close(sem)
-
-	// for s := range ch {
-	// 	display(s)
-	// 	ret = append(ret, s)
-	// }
-
-	display("return")
-	display("blah")
-
-	return ret
+	// Finally we collect all the results of the work.
+	for a := 1; a <= 9; a++ {
+		i := <-results
+		display(i)
+	}
+	return nil
 }
 
 func refMapMap(m map[string]int, fn func(string, int) string) []string {
