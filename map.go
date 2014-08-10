@@ -10,6 +10,8 @@ func init() {
 	MakeMap(&Map)
 	MakeMap(&MapString)
 	MakeMap(&MapInt)
+	MakePMap(&MapPString)
+
 	// MakeMap(&MapStringToBool)
 }
 
@@ -25,12 +27,18 @@ var Map func(interface{}, interface{}) []interface{}
 
 var MapString func(func(string) string, []string) []string
 
+var MapPString func(func(string) string, []string) []string
+
 var MapInt func(func(int) int, []int) []int
 
 // var MapStringToBool func([]string, func(string) bool) []bool
 
 func MakeMap(fn interface{}) {
 	Maker(fn, mapImpl)
+}
+
+func MakePMap(fn interface{}) {
+	Maker(fn, mapPImpl)
 }
 
 func mapImpl(values []reflect.Value) []reflect.Value {
@@ -67,7 +75,51 @@ func mapSlice(fn, col reflect.Value) reflect.Value {
 	return ret
 }
 
-func worker(id int, jobs <-chan int, results chan<- int) {
+func worker(fn, jobs, results reflect.Value) {
+	for {
+		v, ok := jobs.Recv()
+		if !ok {
+			break
+		}
+		r := fn.Call([]reflect.Value{v})
+		results.Send(r[0])
+	}
+}
+
+func mapPImpl(values []reflect.Value) []reflect.Value {
+	fn := interfaceToValue(values[0])
+	col := interfaceToValue(values[1])
+
+	t := col.Type().Elem()
+	jobs := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, t), 100)
+	results := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, t), 100)
+
+	retType := reflect.SliceOf(fn.Type().Out(0))
+	ret := reflect.MakeSlice(retType, col.Len(), col.Len())
+
+	workers := 1
+	for i := 1; i <= workers; i++ {
+		go worker(fn, jobs, results)
+	}
+
+	for j := 0; j < col.Len(); j++ {
+		e := col.Index(j)
+		jobs.Send(e)
+	}
+	jobs.Close()
+
+	for i := 0; i < col.Len(); i++ {
+		v, ok := results.Recv()
+		if !ok {
+			break
+		}
+		ret.Index(i).Set(v)
+	}
+
+	return []reflect.Value{ret}
+}
+
+func refWorker(id int, jobs <-chan int, results chan<- int) {
 	for j := range jobs {
 		fmt.Println("worker", id, "processing job", j)
 		time.Sleep(time.Second)
@@ -88,7 +140,7 @@ func refPSliceMap(fn func(string) string, slice []string) []string {
 	// This starts up 3 workers, initially blocked
 	// because there are no jobs yet.
 	for w := 1; w <= 3; w++ {
-		go worker(w, jobs, results)
+		go refWorker(w, jobs, results)
 	}
 
 	// Here we send 9 `jobs` and then `close` that

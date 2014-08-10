@@ -37,13 +37,25 @@ func TestMapInt(t *testing.T) {
 	equals(t, expect, receive[0])
 }
 
+func TestMakePMap(t *testing.T) {
+	runtime.GOMAXPROCS(runtime.NumCPU())
+	fn := func(s string) string {
+		return s + "!"
+	}
+
+	receive := MapPString(fn, SLICE_STRING)
+
+	// expect := "a!"
+	display(receive)
+	// equals(t, expect, receive[0])
+}
+
 func TestRefPSliceMap(t *testing.T) {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	fn := func(s string) string {
 		return s + "!"
 	}
 
-	display(make([]struct{}, 10))
 	receive := refPSliceMap(fn, SLICE_STRING)
 
 	// expect := "a!"
