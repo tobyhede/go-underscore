@@ -98,11 +98,15 @@ func refPSliceMap(fn func(string) string, slice []string) []string {
 	}
 	close(jobs)
 
+	var is []int
+
 	// Finally we collect all the results of the work.
 	for a := 1; a <= 9; a++ {
 		i := <-results
-		display(i)
+		is = append(is, i)
 	}
+
+	display(is)
 	return nil
 }
 
