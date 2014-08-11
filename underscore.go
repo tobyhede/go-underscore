@@ -49,6 +49,9 @@ func Valueize(values ...interface{}) []reflect.Value {
 }
 
 // SetWorkers sets the number of workers used by the worker pools
+// <p>This is a global default value</p>
+// <p>If different worker pool sizes are required, use the optional worker argument when calling Parallel Implementations</p>
+
 func SetWorkers(w int) {
 	workers = w
 }
