@@ -26,7 +26,7 @@ var Map func(interface{}, interface{}) []interface{}
 
 var MapString func(func(string) string, []string) []string
 
-var MapPString func(func(string) string, []string) []string
+var MapPString func(func(string) string, []string, ...int) []string
 
 var MapInt func(func(int) int, []int) []int
 
@@ -92,6 +92,13 @@ func worker(fn, jobs, results reflect.Value) {
 func mapPImpl(values []reflect.Value) []reflect.Value {
 	fn := interfaceToValue(values[0])
 	col := interfaceToValue(values[1])
+
+	workers := workers
+	if len(values) == 3 {
+		if l := values[2].Len(); l == 1 {
+			workers = int(values[2].Index(0).Int())
+		}
+	}
 
 	t := col.Type().Elem()
 	jobs := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, t), 100)
