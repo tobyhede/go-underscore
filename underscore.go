@@ -17,6 +17,17 @@ func Maker(fn interface{}, impl func(args []reflect.Value) (results []reflect.Va
 	fnV.Set(fnI)
 }
 
+func makeSlice(fn reflect.Value, len int) reflect.Value {
+	t := reflect.SliceOf(fn.Type().Out(0))
+	return reflect.MakeSlice(t, len, len)
+}
+
+func makeWorkerChans(t reflect.Type) (reflect.Value, reflect.Value) {
+	job := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, t), 100)
+	res := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, t), 100)
+	return job, res
+}
+
 // ToI takes a slice and converts it to type []interface[]
 func ToI(slice interface{}) []interface{} {
 	s := reflect.ValueOf(slice)
@@ -51,7 +62,6 @@ func Valueize(values ...interface{}) []reflect.Value {
 // SetWorkers sets the number of workers used by the worker pools
 // <p>This is a global default value</p>
 // <p>If different worker pool sizes are required, use the optional worker argument when calling Parallel Implementations</p>
-
 func SetWorkers(w int) {
 	workers = w
 }

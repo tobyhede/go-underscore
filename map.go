@@ -49,10 +49,7 @@ func mapImpl(values []reflect.Value) []reflect.Value {
 	fn := interfaceToValue(values[0])
 	col := interfaceToValue(values[1])
 
-	var ret reflect.Value
-
-	retType := reflect.SliceOf(fn.Type().Out(0))
-	ret = reflect.MakeSlice(retType, col.Len(), col.Len())
+	ret := makeSlice(fn, col.Len())
 
 	// if list.Kind() == reflect.Map {
 	// 	ret = everyMap(fn, list)
@@ -66,9 +63,7 @@ func mapImpl(values []reflect.Value) []reflect.Value {
 }
 
 func mapSlice(fn, col reflect.Value) reflect.Value {
-
-	retType := reflect.SliceOf(fn.Type().Out(0))
-	ret := reflect.MakeSlice(retType, col.Len(), col.Len())
+	ret := makeSlice(fn, col.Len())
 
 	for i := 0; i < col.Len(); i++ {
 		e := col.Index(i)
@@ -78,7 +73,7 @@ func mapSlice(fn, col reflect.Value) reflect.Value {
 	return ret
 }
 
-func worker(fn, jobs, results reflect.Value) {
+func mapWorker(fn, jobs, results reflect.Value) {
 	for {
 		v, ok := jobs.Recv()
 		if !ok {
@@ -101,24 +96,22 @@ func mapPImpl(values []reflect.Value) []reflect.Value {
 	}
 
 	t := col.Type().Elem()
-	jobs := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, t), 100)
-	results := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, t), 100)
+	job, res := makeWorkerChans(t)
 
-	retType := reflect.SliceOf(fn.Type().Out(0))
-	ret := reflect.MakeSlice(retType, col.Len(), col.Len())
+	ret := makeSlice(fn, col.Len())
 
 	for i := 1; i <= workers; i++ {
-		go worker(fn, jobs, results)
+		go mapWorker(fn, job, res)
 	}
 
 	for j := 0; j < col.Len(); j++ {
 		e := col.Index(j)
-		jobs.Send(e)
+		job.Send(e)
 	}
-	jobs.Close()
+	job.Close()
 
 	for i := 0; i < col.Len(); i++ {
-		v, ok := results.Recv()
+		v, ok := res.Recv()
 		if !ok {
 			break
 		}
