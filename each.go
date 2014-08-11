@@ -41,7 +41,7 @@ func MakeEach(fn interface{}) {
 	Maker(fn, each)
 }
 
-// MakeEachP implements a typed Parellel-Each function in the form EachP func(func(A, B), []A)
+// MakeEachP implements a typed Parallel-Each function in the form EachP func(func(A, B), []A)
 func MakeEachP(fn interface{}) {
 	Maker(fn, eachP)
 }

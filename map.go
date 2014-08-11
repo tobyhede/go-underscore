@@ -14,32 +14,32 @@ func init() {
 	// MakeMap(&MapStringToBool)
 }
 
-// Each func(func(A, B), []A)
-// Applies the given iterator function to each element of a collection (slice or map).
+// Map func(func(A) C, []A) []C
+// Applies the given iterator function to each element of a collection (slice or map) and returns a new slice.
 // If the collection is a Slice, the iterator function arguments are *value, index*
 // If the collection is a Map, the iterator function arguments are *value, key*
 // Iterator functions accept a value, and the index or key is an optional argument.
-// Note: each does not return a value, you may want un.Map
-// var Each func(func(value, i interface{}), interface{})
-// var Map func(interface{}, func(interface{}) interface{}) []interface{}
 var Map func(interface{}, interface{}) []interface{}
 
+// Applies the given iterator function to each element of a []string and returns a new []string of the computed results.
 var MapString func(func(string) string, []string) []string
 
-var MapPString func(func(string) string, []string, ...int) []string
-
+// Applies the given iterator function to each element of a []int and returns a new []int of the computed results.
 var MapInt func(func(int) int, []int) []int
+
+// Applies the given iterator function to each element of a []string and returns a new []string of the computed results.
+// <p>Uses a Worker Pool using either the global worker value (un.SetWorker) or as an optional parameter</p>
+// <p>MapPString(fn, col, n)</p>
+var MapPString func(func(string) string, []string, ...int) []string
 
 // var MapStringToBool func([]string, func(string) bool) []bool
 
-// Each func(func(A, B), []A)
-// Applies the given iterator function to each element of a collection (slice or map).
+// MakeMap implements a typed Map function in the form Map func(func(A) C, []A) []C
 func MakeMap(fn interface{}) {
 	Maker(fn, mapImpl)
 }
 
-// Each func(func(A, B), []A)
-// Applies the given iterator function to each element of a collection (slice or map).
+// MakePMap implements a typed Parallel Map function in the form Map func(func(A) C, []A) []C
 func MakePMap(fn interface{}) {
 	Maker(fn, mapPImpl)
 }
