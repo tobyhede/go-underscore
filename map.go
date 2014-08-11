@@ -11,7 +11,6 @@ func init() {
 	MakeMap(&MapString)
 	MakeMap(&MapInt)
 	MakePMap(&MapPString)
-
 	// MakeMap(&MapStringToBool)
 }
 
@@ -33,10 +32,14 @@ var MapInt func(func(int) int, []int) []int
 
 // var MapStringToBool func([]string, func(string) bool) []bool
 
+// Each func(func(A, B), []A)
+// Applies the given iterator function to each element of a collection (slice or map).
 func MakeMap(fn interface{}) {
 	Maker(fn, mapImpl)
 }
 
+// Each func(func(A, B), []A)
+// Applies the given iterator function to each element of a collection (slice or map).
 func MakePMap(fn interface{}) {
 	Maker(fn, mapPImpl)
 }
@@ -97,7 +100,6 @@ func mapPImpl(values []reflect.Value) []reflect.Value {
 	retType := reflect.SliceOf(fn.Type().Out(0))
 	ret := reflect.MakeSlice(retType, col.Len(), col.Len())
 
-	workers := 1
 	for i := 1; i <= workers; i++ {
 		go worker(fn, jobs, results)
 	}

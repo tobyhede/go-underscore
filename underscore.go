@@ -7,6 +7,8 @@ import (
 func init() {
 }
 
+var workers int = 6
+
 // Maker takes a function pointer (fn) and implements it with the given reflection-based function implementation
 // Internally uses reflect.MakeFunc
 func Maker(fn interface{}, impl func(args []reflect.Value) (results []reflect.Value)) {
@@ -44,6 +46,11 @@ func Valueize(values ...interface{}) []reflect.Value {
 	}
 
 	return ret
+}
+
+// SetWorkers sets the number of workers used by the worker pools
+func SetWorkers(w int) {
+	workers = w
 }
 
 // InterfaceToValue converts a value of interface{} to a value of Interface()

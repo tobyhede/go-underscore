@@ -42,7 +42,6 @@ func TestMakePMap(t *testing.T) {
 	fn := func(s string) string {
 		return s + "!"
 	}
-
 	receive := MapPString(fn, SLICE_STRING)
 
 	// expect := "a!"
