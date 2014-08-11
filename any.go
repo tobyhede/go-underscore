@@ -32,16 +32,15 @@ func MakeAny(fn interface{}) {
 }
 
 func any(values []reflect.Value) []reflect.Value {
-	fn := interfaceToValue(values[0])
-	list := interfaceToValue(values[1])
+	fn, col := extractArgs(values)
 
 	var ret bool
-	if list.Kind() == reflect.Map {
-		ret = anyMap(fn, list)
+	if col.Kind() == reflect.Map {
+		ret = anyMap(fn, col)
 	}
 
-	if list.Kind() == reflect.Slice {
-		ret = anySlice(fn, list)
+	if col.Kind() == reflect.Slice {
+		ret = anySlice(fn, col)
 	}
 
 	return Valueize(reflect.ValueOf(ret))

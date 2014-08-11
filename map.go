@@ -46,8 +46,7 @@ func MakePMap(fn interface{}) {
 
 func mapImpl(values []reflect.Value) []reflect.Value {
 
-	fn := interfaceToValue(values[0])
-	col := interfaceToValue(values[1])
+	fn, col := extractArgs(values)
 
 	ret := makeSlice(fn, col.Len())
 
@@ -85,8 +84,7 @@ func mapWorker(fn, jobs, results reflect.Value) {
 }
 
 func mapPImpl(values []reflect.Value) []reflect.Value {
-	fn := interfaceToValue(values[0])
-	col := interfaceToValue(values[1])
+	fn, col := extractArgs(values)
 
 	workers := workers
 	if len(values) == 3 {

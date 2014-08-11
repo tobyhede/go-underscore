@@ -32,16 +32,15 @@ func MakeNone(fn interface{}) {
 }
 
 func none(values []reflect.Value) []reflect.Value {
-	fn := interfaceToValue(values[0])
-	list := interfaceToValue(values[1])
+	fn, col := extractArgs(values)
 
 	var ret bool
-	if list.Kind() == reflect.Map {
-		ret = noneMap(fn, list)
+	if col.Kind() == reflect.Map {
+		ret = noneMap(fn, col)
 	}
 
-	if list.Kind() == reflect.Slice {
-		ret = noneSlice(fn, list)
+	if col.Kind() == reflect.Slice {
+		ret = noneSlice(fn, col)
 	}
 
 	return Valueize(reflect.ValueOf(ret))

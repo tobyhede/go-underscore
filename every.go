@@ -32,16 +32,15 @@ func MakeEvery(fn interface{}) {
 }
 
 func every(values []reflect.Value) []reflect.Value {
-	fn := interfaceToValue(values[0])
-	list := interfaceToValue(values[1])
+	fn, col := extractArgs(values)
 
 	var ret bool
-	if list.Kind() == reflect.Map {
-		ret = everyMap(fn, list)
+	if col.Kind() == reflect.Map {
+		ret = everyMap(fn, col)
 	}
 
-	if list.Kind() == reflect.Slice {
-		ret = everySlice(fn, list)
+	if col.Kind() == reflect.Slice {
+		ret = everySlice(fn, col)
 	}
 
 	return Valueize(reflect.ValueOf(ret))

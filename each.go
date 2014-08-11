@@ -47,15 +47,14 @@ func MakeEachP(fn interface{}) {
 }
 
 func each(values []reflect.Value) []reflect.Value {
-	fn := interfaceToValue(values[0])
-	list := interfaceToValue(values[1])
+	fn, col := extractArgs(values)
 
-	if list.Kind() == reflect.Map {
-		eachMap(fn, list)
+	if col.Kind() == reflect.Map {
+		eachMap(fn, col)
 	}
 
-	if list.Kind() == reflect.Slice {
-		eachSlice(fn, list)
+	if col.Kind() == reflect.Slice {
+		eachSlice(fn, col)
 	}
 
 	return nil
@@ -85,15 +84,14 @@ func eachCall(fn, v, i reflect.Value) {
 
 func eachP(values []reflect.Value) []reflect.Value {
 
-	fn := interfaceToValue(values[0])
-	list := interfaceToValue(values[1])
+	fn, col := extractArgs(values)
 
-	if list.Kind() == reflect.Map {
-		eachMapP(fn, list)
+	if col.Kind() == reflect.Map {
+		eachMapP(fn, col)
 	}
 
-	if list.Kind() == reflect.Slice {
-		eachSliceP(fn, list)
+	if col.Kind() == reflect.Slice {
+		eachSliceP(fn, col)
 	}
 
 	return nil

@@ -49,8 +49,7 @@ type partitioner struct {
 
 func partition(values []reflect.Value) []reflect.Value {
 
-	fn := interfaceToValue(values[0])
-	col := interfaceToValue(values[1])
+	fn, col := extractArgs(values)
 	kind := values[1].Kind()
 
 	p := newPartitioner(fn, col, kind)
