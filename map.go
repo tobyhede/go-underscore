@@ -102,7 +102,10 @@ func mapPImpl(values []reflect.Value) []reflect.Value {
 		go mapWorker(fn, job, res)
 	}
 
-	mapPSlice(job, col)
+	if col.Kind() == reflect.Slice {
+		mapPSlice(job, col)
+	}
+
 	job.Close()
 
 	for i := 0; i < col.Len(); i++ {
@@ -123,7 +126,7 @@ func mapPSlice(job, col reflect.Value) {
 	}
 }
 
-func mapPMap(fn, col reflect.Value) {
+func mapPMap(job, col reflect.Value) {
 }
 
 func refWorker(id int, jobs <-chan int, results chan<- int) {
@@ -134,41 +137,6 @@ func refWorker(id int, jobs <-chan int, results chan<- int) {
 	}
 }
 
-/**
-	Reference Map impementations
-**/
-func refPSliceMap(fn func(string) string, slice []string) []string {
-	// In order to use our pool of workers we need to send
-	// them work and collect their results. We make 2
-	// channels for this.
-	jobs := make(chan int, 100)
-	results := make(chan int, 100)
-
-	// This starts up 3 workers, initially blocked
-	// because there are no jobs yet.
-	for w := 1; w <= 3; w++ {
-		go refWorker(w, jobs, results)
-	}
-
-	// Here we send 9 `jobs` and then `close` that
-	// channel to indicate that's all the work we have.
-	for j := 1; j <= 9; j++ {
-		jobs <- j
-	}
-	close(jobs)
-
-	var is []int
-
-	// Finally we collect all the results of the work.
-	for a := 1; a <= 9; a++ {
-		i := <-results
-		is = append(is, i)
-	}
-
-	display(is)
-	return nil
-}
-
 func refMapMap(m map[string]int, fn func(string, int) string) []string {
 	ret := make([]string, 0, len(m))
 
@@ -177,18 +145,3 @@ func refMapMap(m map[string]int, fn func(string, int) string) []string {
 	}
 	return ret
 }
-
-// func refPEach(slice []string, fn func(string)) {
-// 	var done sync.WaitGroup
-
-// 	for _, s := range slice {
-// 		s := s
-// 		done.Add(1)
-// 		go func() {
-// 			fn(s)
-// 			done.Done()
-// 		}()
-// 	}
-
-// 	done.Wait()
-// }
