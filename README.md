@@ -21,15 +21,18 @@ This package is in heavy flux at the moment as I work to incorporate feedback fr
 :squirrel: Todo
 ------------------------------------------
 
-* refactor to make functions first parameter (eg Each func(func(A), []A))
-* godoc
-* contains
-* indexOf
-* pMap (parallel)
-* handle maps
-* ~~none~~
-* ~~all~~
-* ~~any~~
+- [ ] godoc
+- [ ] contains
+- [ ] indexOf
+- [ ] worker pools
+- [x] parallel each
+- [x] parallel map with worker pool
+- [x] refactor to make functions first parameter (eg Each func(func(A), []A))
+- [x] handle maps & slices
+- [x] all
+- [x] any
+- [x] none
+
 
 
 ------------------------------------------
