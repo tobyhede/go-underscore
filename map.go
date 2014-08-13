@@ -106,6 +106,10 @@ func mapPImpl(values []reflect.Value) []reflect.Value {
 		mapPSlice(job, col)
 	}
 
+	if col.Kind() == reflect.Map {
+		mapPMap(job, col)
+	}
+
 	job.Close()
 
 	for i := 0; i < col.Len(); i++ {
@@ -127,6 +131,10 @@ func mapPSlice(job, col reflect.Value) {
 }
 
 func mapPMap(job, col reflect.Value) {
+	for _, k := range col.MapKeys() {
+		v := col.MapIndex(k)
+		job.Send(v)
+	}
 }
 
 func refWorker(id int, jobs <-chan int, results chan<- int) {
