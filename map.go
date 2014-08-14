@@ -1,21 +1,18 @@
 package un
 
-import (
-	"fmt"
-	"reflect"
-	"time"
-)
+import "reflect"
 
 func init() {
 	MakeMap(&Map)
 	MakeMap(&MapString)
 	MakeMap(&MapInt)
+	MakePMap(&MapP)
 	MakePMap(&MapPString)
 	// MakeMap(&MapStringToBool)
 }
 
 // Map func(func(A) C, []A) []C
-// Applies the given iterator function to each element of a collection (slice or map) and returns a new slice.
+// Applies the given iterator function to each element of a collection (slice or map) and returns a new slice of the computed results.
 // If the collection is a Slice, the iterator function arguments are *value, index*
 // If the collection is a Map, the iterator function arguments are *value, key*
 // Iterator functions accept a value, and the index or key is an optional argument.
@@ -26,6 +23,9 @@ var MapString func(func(string) string, []string) []string
 
 // Applies the given iterator function to each element of a []int and returns a new []int of the computed results.
 var MapInt func(func(int) int, []int) []int
+
+// Applies the given iterator function to each element of a collection (slice or map) and returns a new slice of the computed results.
+var MapP func(interface{}, interface{}, ...int) []interface{}
 
 // Applies the given iterator function to each element of a []string and returns a new []string of the computed results.
 // <p>Uses a Worker Pool using either the global worker value (un.SetWorker) or as an optional parameter</p>
@@ -72,28 +72,33 @@ func mapSlice(fn, col reflect.Value) reflect.Value {
 	return ret
 }
 
-func mapWorker(fn, jobs, results reflect.Value) {
+func mapWorker(fn reflect.Value, job chan []reflect.Value, res reflect.Value) {
+	i := 0
 	for {
-		v, ok := jobs.Recv()
+		i++
+		v, ok := <-job
 		if !ok {
 			break
 		}
-		r := fn.Call([]reflect.Value{v})
-		results.Send(r[0])
+		if len(v) > 0 {
+			r := fn.Call(v)
+			res.Send(r[0])
+		}
+
 	}
 }
 
 func mapPImpl(values []reflect.Value) []reflect.Value {
 	fn, col := extractArgs(values)
 
-	workers := workers
+	workers := 1 //workers
 	if len(values) == 3 {
 		if l := values[2].Len(); l == 1 {
 			workers = int(values[2].Index(0).Int())
 		}
 	}
 
-	t := col.Type().Elem()
+	t := fn.Type().Out(0)
 	job, res := makeWorkerChans(t)
 
 	ret := makeSlice(fn, col.Len())
@@ -110,7 +115,7 @@ func mapPImpl(values []reflect.Value) []reflect.Value {
 		mapPMap(job, col)
 	}
 
-	job.Close()
+	close(job)
 
 	for i := 0; i < col.Len(); i++ {
 		v, ok := res.Recv()
@@ -123,25 +128,17 @@ func mapPImpl(values []reflect.Value) []reflect.Value {
 	return []reflect.Value{ret}
 }
 
-func mapPSlice(job, col reflect.Value) {
+func mapPSlice(job chan []reflect.Value, col reflect.Value) {
 	for i := 0; i < col.Len(); i++ {
 		e := col.Index(i)
-		job.Send(e)
+		job <- []reflect.Value{e}
 	}
 }
 
-func mapPMap(job, col reflect.Value) {
+func mapPMap(job chan []reflect.Value, col reflect.Value) {
 	for _, k := range col.MapKeys() {
 		v := col.MapIndex(k)
-		job.Send(v)
-	}
-}
-
-func refWorker(id int, jobs <-chan int, results chan<- int) {
-	for j := range jobs {
-		fmt.Println("worker", id, "processing job", j)
-		time.Sleep(time.Second)
-		results <- j * 2
+		job <- []reflect.Value{v, k}
 	}
 }
 

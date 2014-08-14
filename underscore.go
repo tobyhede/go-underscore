@@ -55,7 +55,14 @@ func SetWorkers(w int) {
 	workers = w
 }
 
-// InterfaceToValue converts a value of interface{} to a value of Interface()
+// extractArgs pulls the arguments from a []reflect.Value and converts as appropriate to underlying types
+func extractArgs(values []reflect.Value) (reflect.Value, reflect.Value) {
+	fn := interfaceToValue(values[0])
+	col := interfaceToValue(values[1])
+	return fn, col
+}
+
+// interfaceToValue converts a value of interface{} to a value of Interface()
 // That is, converts to the underlying type of the reflect.Value
 func interfaceToValue(v reflect.Value) reflect.Value {
 	if v.Kind() == reflect.Interface {
@@ -64,25 +71,31 @@ func interfaceToValue(v reflect.Value) reflect.Value {
 	return v
 }
 
+// makeSlice makes a slice of the Output type of the supplied function, and of the specifed capacity
 func makeSlice(fn reflect.Value, len int) reflect.Value {
 	t := reflect.SliceOf(fn.Type().Out(0))
 	return reflect.MakeSlice(t, len, len)
 }
 
-func makeWorkerChans(t reflect.Type) (reflect.Value, reflect.Value) {
-	job := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, t), 100)
+// makeWorkerChans makes a buffered channel of the specified type
+func makeWorkerChans(t reflect.Type) (chan []reflect.Value, reflect.Value) {
+	// display(reflect.TypeOf([]reflect.Value{}))
+	// job := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, reflect.TypeOf(&channeller{})), 100)
+	// job := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, reflect.TypeOf([]reflect.Value{})), 100)
+	job := make(chan []reflect.Value)
 	res := reflect.MakeChan(reflect.ChanOf(reflect.BothDir, t), 100)
 	return job, res
 }
 
-func extractArgs(values []reflect.Value) (reflect.Value, reflect.Value) {
-	fn := interfaceToValue(values[0])
-	col := interfaceToValue(values[1])
-	return fn, col
-}
-
-func predicate(fn reflect.Value, args ...reflect.Value) bool {
+func callPredicate(fn reflect.Value, args ...reflect.Value) bool {
 	in := fn.Type().NumIn()
 	res := fn.Call(args[0:in])
 	return res[0].Bool()
+}
+
+func callFn(fn reflect.Value, args ...reflect.Value) []reflect.Value {
+	in := fn.Type().NumIn()
+	display(fn)
+	res := fn.Call(args[0:in])
+	return res
 }

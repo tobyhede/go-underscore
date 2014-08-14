@@ -49,7 +49,7 @@ func any(values []reflect.Value) []reflect.Value {
 func anySlice(fn, s reflect.Value) bool {
 	for i := 0; i < s.Len(); i++ {
 		v := s.Index(i)
-		if ok := predicate(fn, v); ok {
+		if ok := callPredicate(fn, v); ok {
 			return true
 		}
 	}
@@ -59,7 +59,7 @@ func anySlice(fn, s reflect.Value) bool {
 func anyMap(fn, m reflect.Value) bool {
 	for _, k := range m.MapKeys() {
 		v := m.MapIndex(k)
-		if ok := predicate(fn, v); ok {
+		if ok := callPredicate(fn, v); ok {
 			return true
 		}
 	}

@@ -97,7 +97,7 @@ func (p *partitioner) partitionMap() {
 }
 
 func (p *partitioner) partitionate(val, idx_or_key reflect.Value) {
-	if ok := predicate(p.fn, val, idx_or_key); ok {
+	if ok := callPredicate(p.fn, val, idx_or_key); ok {
 		p.t = reflect.Append(p.t, val)
 	} else {
 		p.f = reflect.Append(p.f, val)
