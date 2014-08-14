@@ -73,9 +73,7 @@ func mapSlice(fn, col reflect.Value) reflect.Value {
 }
 
 func mapWorker(fn reflect.Value, job chan []reflect.Value, res reflect.Value) {
-	i := 0
 	for {
-		i++
 		v, ok := <-job
 		if !ok {
 			break
@@ -84,7 +82,6 @@ func mapWorker(fn reflect.Value, job chan []reflect.Value, res reflect.Value) {
 			r := fn.Call(v)
 			res.Send(r[0])
 		}
-
 	}
 }
 
