@@ -95,7 +95,7 @@ func callPredicate(fn reflect.Value, args ...reflect.Value) bool {
 
 func callFn(fn reflect.Value, args ...reflect.Value) []reflect.Value {
 	in := fn.Type().NumIn()
-	display(fn)
+	// display(fn)
 	res := fn.Call(args[0:in])
 	return res
 }
