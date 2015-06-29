@@ -98,7 +98,7 @@ Using a Typed Slice
   var sum int
 
   fn := func(v, i int) {
-    receive += v
+    sum += v
   }
 
   i := []int{1, 2, 3, 4, 5}
@@ -113,7 +113,7 @@ Using a Typed Map
   var sum int
 
   fn := func(v int, k string) {
-    receive += v
+    sum += v
   }
 
   m := map[string]int{"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
