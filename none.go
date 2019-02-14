@@ -26,7 +26,7 @@ var NoneInt func(func(value int) bool, []int) bool
 // Predicate function accepts a string and returns a boolean
 var NoneString func(func(value string) bool, []string) bool
 
-// MakeEach implements a typed Each function in the form Each func(func(A, B), []A)
+// MakeNone: implements a typed Each function in the form Each func(func(A, B), []A)
 func MakeNone(fn interface{}) {
 	Maker(fn, none)
 }
