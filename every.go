@@ -26,7 +26,7 @@ var EveryInt func(func(value int) bool, []int) bool
 // Predicate function accepts a string and returns a boolean
 var EveryString func(func(value string) bool, []string) bool
 
-// MakeEach implements a typed Each function in the form Each func(func(A, B), []A)
+// MakeEvery: implements a typed Each function in the form Each func(func(A, B), []A)
 func MakeEvery(fn interface{}) {
 	Maker(fn, every)
 }
